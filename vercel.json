@@ -1,5 +1,4 @@
 {
-  "framework": "nuxt",
   "buildCommand": "yarn build",
   "outputDirectory": ".output",
   "installCommand": "yarn install",
