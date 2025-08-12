@@ -31,15 +31,6 @@ export default defineNuxtConfig({
     shim: false
   },
 
-  routeRules: {
-    // Route kuralları burada tanımlanabilir
-  },
-
-  experimental: {
-    // Deneysel özellikleri etkinleştir
-    componentIslands: true
-  },
-
   app: {
     // Global app yapılandırması
     pageTransition: { name: 'page', mode: 'out-in' }
@@ -49,6 +40,25 @@ export default defineNuxtConfig({
   ssr: true,
   nitro: {
     preset: 'vercel'
+  },
+
+  // Vercel için özel ayarlar
+  experimental: {
+    // Deneysel özellikleri etkinleştir
+    componentIslands: true
+  },
+
+  // Route rules
+  routeRules: {
+    '/': { prerender: true },
+    '/about': { prerender: true },
+    '/contact': { prerender: true },
+    '/faq': { prerender: true },
+    '/links': { prerender: true },
+    '/literature': { prerender: true },
+    '/services': { prerender: true },
+    '/submit-data': { prerender: true },
+    '/search-data/**': { prerender: true }
   },
 
   compatibilityDate: '2025-01-17',
