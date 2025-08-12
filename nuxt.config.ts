@@ -48,7 +48,7 @@ export default defineNuxtConfig({
   // SSR settings
   ssr: true,
   nitro: {
-    preset: 'node'
+    preset: 'vercel'
   },
 
   compatibilityDate: '2025-01-17',
