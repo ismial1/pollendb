@@ -1,8 +1,4 @@
 {
-  "buildCommand": "yarn build",
-  "outputDirectory": ".output",
-  "installCommand": "yarn install",
-  "devCommand": "yarn dev",
   "rewrites": [
     {
       "source": "/(.*)",
