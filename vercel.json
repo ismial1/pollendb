@@ -3,11 +3,6 @@
   "outputDirectory": ".output",
   "installCommand": "yarn install",
   "devCommand": "yarn dev",
-  "functions": {
-    "app/server/**/*.ts": {
-      "runtime": "nodejs18.x"
-    }
-  },
   "rewrites": [
     {
       "source": "/(.*)",
