@@ -816,7 +816,9 @@
 import { ref, computed, onUnmounted, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useSupabaseStore } from '~/store/supabase';
+import { useSupabase } from '~/composables/useSupabase';
 const router = useRouter()
+const { supabase } = useSupabase()
 const currentStep = ref(1)
 const totalSteps = 7 // Toplam adım sayısı
 const isSubmitting = ref(false)
@@ -1004,12 +1006,24 @@ const handleSubmit = async () => {
   try {
     isSubmitting.value = true
     
-    // Kullanıcı girişi kontrolü - localStorage'dan kontrol et
-    const token = localStorage.getItem('token')
-    const userData = localStorage.getItem('user')
+    // Kullanıcı girişi kontrolü - Supabase session'ını kontrol et
+    const { data: { user: currentUser } } = await supabase.auth.getUser()
     
-    if (!token || !userData) {
+    if (!currentUser) {
       showNotification('Veri göndermek için giriş yapmanız gerekiyor.', 'error')
+      router.push('/auth/login')
+      return
+    }
+    
+    // Kullanıcı bilgilerini al
+    const { data: userData, error: userError } = await supabase
+      .from('users')
+      .select('*')
+      .eq('id', currentUser.id)
+      .single()
+    
+    if (userError || !userData) {
+      showNotification('Kullanıcı bilgileri alınamadı. Lütfen tekrar giriş yapın.', 'error')
       router.push('/auth/login')
       return
     }
@@ -1051,7 +1065,7 @@ const handleSubmit = async () => {
 
     // Form verilerini Supabase formatına dönüştür
     const plantData = {
-      user_id: JSON.parse(localStorage.getItem('user')).id, // Kullanıcı ID'si ekle
+      user_id: userData.id, // Kullanıcı ID'si ekle
       name: formData.value.name,
       family: formData.value.family,
       description: formData.value.description,
@@ -1091,17 +1105,31 @@ const handleSubmit = async () => {
       staining: formData.value.Staining
     }
 
-    // Supabase'e gönder
-    const result = await supabaseStore.createPlant(plantData)
+    // Kullanıcı bilgileri zaten userData'da var
+    
 
-    if (result.success) {
-    showNotification('Veriler başarıyla kaydedildi!')
+    
+    // Submissions tablosuna kaydet (onay bekleyecek)
+    const { data: submissionData, error: submissionError } = await supabase
+      .from('submissions')
+      .insert({
+        user_id: userData.id,
+        user_email: userData.email,
+        user_name: userData.full_name,
+        plant_data: plantData,
+        status: 'pending'
+      })
+      .select()
+
+    if (submissionError) {
+      console.error('Submission error:', submissionError)
+      throw new Error('Veri gönderimi başarısız oldu: ' + submissionError.message)
+    }
+
+    showNotification('Verileriniz başarıyla gönderildi! Admin onayından sonra yayınlanacaktır.', 'success')
     setTimeout(() => {
       router.push('/')
     }, 2000)
-    } else {
-      throw new Error(result.error || 'Veri gönderimi başarısız oldu')
-    }
 
   } catch (error) {
     console.error('Submit error:', error)
@@ -1265,8 +1293,37 @@ onUnmounted(() => {
   }
 })
 
+// Admin/Moderator access check
+const checkAdminModeratorAccess = () => {
+  const token = localStorage.getItem('token')
+  const userData = localStorage.getItem('user')
+
+  if (!token || !userData) {
+    router.push('/auth/login')
+    return false
+  }
+
+  try {
+    const user = JSON.parse(userData)
+    if (user.role !== 'admin' && user.role !== 'moderator') {
+      router.push('/404')
+      return false
+    }
+    return true
+  } catch (error) {
+    console.error('User data parse error:', error)
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    router.push('/auth/login')
+    return false
+  }
+}
+
 // Fetch options on component mount
 onMounted(async () => {
+  // Yetki kontrolü
+  if (!checkAdminModeratorAccess()) return
+  
   await supabaseStore.fetchOptions()
 })
 

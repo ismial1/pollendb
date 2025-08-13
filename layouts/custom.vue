@@ -27,13 +27,13 @@
           Kullanıcılar
         </NuxtLink>
 
-        <NuxtLink to="/admin/submissions" 
+        <NuxtLink v-if="isSuperAdmin" to="/admin/submissions" 
           class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg mb-2"
           :class="{ 'bg-gray-100': $route.path === '/admin/submissions' }">
           <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
           </svg>
-          Veri Onayları
+          Veri Onayları (Süper Admin)
         </NuxtLink>
 
         <NuxtLink to="/admin/messages" 
@@ -74,7 +74,29 @@
 </template>
 
 <script setup>
-// Script kısmı boş kalabilir
+import { ref, computed, onMounted } from 'vue'
+
+// Süper admin kontrolü
+const isSuperAdmin = ref(false)
+
+const checkSuperAdminStatus = () => {
+  const userData = localStorage.getItem('user')
+  if (userData) {
+    try {
+      const user = JSON.parse(userData)
+      isSuperAdmin.value = user.role === 'admin'
+    } catch (error) {
+      console.error('User data parse error:', error)
+      isSuperAdmin.value = false
+    }
+  } else {
+    isSuperAdmin.value = false
+  }
+}
+
+onMounted(() => {
+  checkSuperAdminStatus()
+})
 </script>
 
 <style>

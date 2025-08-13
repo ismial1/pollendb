@@ -41,7 +41,7 @@
             <dd class="mt-2 text-gray-600">Mikroskop Görüntüsü</dd>
           </div>
           <div class="text-center">
-            <dt class="text-2xl font-bold text-indigo-600">100+</dt>
+            <dt class="text-2xl font-bold text-indigo-600">{{ familyCount }}+</dt>
             <dd class="mt-2 text-gray-600">Bitki Familyası</dd>
           </div>
           <div class="text-center">
@@ -117,6 +117,7 @@ import { useSupabase } from '~/composables/useSupabase'
 
 const { supabase } = useSupabase()
 const plantCount = ref(0)
+const familyCount = ref(0)
 const researcherCount = ref(0)
 
 // Plant sayısını Supabase'den çek
@@ -134,6 +135,26 @@ const loadPlantCount = async () => {
     plantCount.value = count || 0
   } catch (error) {
     console.error('Plant count fetch error:', error)
+  }
+}
+
+// Familya sayısını Supabase'den çek
+const loadFamilyCount = async () => {
+  try {
+    const { data, error } = await supabase
+      .from('plants')
+      .select('family')
+    
+    if (error) {
+      console.error('Family count error:', error)
+      return
+    }
+    
+    // Benzersiz familyaları say
+    const uniqueFamilies = [...new Set(data.map(plant => plant.family).filter(Boolean))]
+    familyCount.value = uniqueFamilies.length
+  } catch (error) {
+    console.error('Family count fetch error:', error)
   }
 }
 
@@ -159,6 +180,7 @@ const loadResearcherCount = async () => {
 // Sayfa yüklendiğinde verileri çek
 onMounted(() => {
   loadPlantCount()
+  loadFamilyCount()
   loadResearcherCount()
 })
 </script> 

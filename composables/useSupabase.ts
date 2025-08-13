@@ -63,7 +63,14 @@ export const useSupabase = () => {
   }
 
   // Yeni instance oluştur ve sakla
-  supabaseInstance = createClient(supabaseUrl as string, supabaseKey as string)
+  supabaseInstance = createClient(supabaseUrl as string, supabaseKey as string, {
+    auth: {
+      storage: process.client ? window.localStorage : undefined,
+      autoRefreshToken: true,
+      persistSession: true,
+      detectSessionInUrl: true
+    }
+  })
   
   return {
     supabase: supabaseInstance,

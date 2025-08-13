@@ -132,11 +132,33 @@ export const useSupabaseStore = defineStore('supabase', () => {
     if (process.server) return
     
     try {
-      const { data: { user: supabaseUser } } = await supabase.auth.getUser()
+      // Önce localStorage'dan token'ı kontrol et
+      const token = localStorage.getItem('token')
+      const userData = localStorage.getItem('user')
       
-      if (supabaseUser) {
-        const { data: userData } = await supabase.from('users').select('*').eq('id', supabaseUser.id).single()
-        user.value = userData
+      if (token && userData) {
+        // Token varsa, Supabase session'ını restore et
+        const parsedUser = JSON.parse(userData)
+        
+        // Session'ı manuel olarak set et
+        const { data: sessionData } = await supabase.auth.setSession({
+          access_token: token,
+          refresh_token: token // Geçici olarak aynı token'ı kullan
+        })
+        
+        if (sessionData.session) {
+          user.value = parsedUser
+          session.value = sessionData.session
+          console.log('Session restored from localStorage')
+        }
+      } else {
+        // Normal Supabase auth kontrolü
+        const { data: { user: supabaseUser } } = await supabase.auth.getUser()
+        
+        if (supabaseUser) {
+          const { data: userData } = await supabase.from('users').select('*').eq('id', supabaseUser.id).single()
+          user.value = userData
+        }
       }
     } catch (err: any) {
       console.error('Auth check error:', err)

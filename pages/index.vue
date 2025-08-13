@@ -64,7 +64,7 @@
             <div class="text-gray-600 mt-2">Polen Örneği</div>
           </div>
           <div class="p-6 bg-purple-50 rounded-xl">
-            <div class="text-3xl font-bold text-purple-600">100+</div>
+            <div class="text-3xl font-bold text-purple-600">{{ familyCount }}+</div>
             <div class="text-gray-600 mt-2">Bitki Familyası</div>
           </div>
           <div class="p-6 bg-indigo-50 rounded-xl">
@@ -147,6 +147,7 @@ import { useSupabase } from '~/composables/useSupabase'
 
 const { supabase } = useSupabase()
 const plantCount = ref(0)
+const familyCount = ref(0)
 const researcherCount = ref(0)
 const latestPlants = ref([])
 
@@ -194,6 +195,26 @@ const loadPlantCount = async () => {
   }
 }
 
+// Familya sayısını Supabase'den çek
+const loadFamilyCount = async () => {
+  try {
+    const { data, error } = await supabase
+      .from('plants')
+      .select('family')
+    
+    if (error) {
+      console.error('Family count error:', error)
+      return
+    }
+    
+    // Benzersiz familyaları say
+    const uniqueFamilies = [...new Set(data.map(plant => plant.family).filter(Boolean))]
+    familyCount.value = uniqueFamilies.length
+  } catch (error) {
+    console.error('Family count fetch error:', error)
+  }
+}
+
 // Araştırmacı sayısını Supabase'den çek (admin ve moderatör)
 const loadResearcherCount = async () => {
   try {
@@ -237,6 +258,9 @@ const loadLatestPlants = async () => {
 onMounted(() => {
   // Plant sayısını yükle
   loadPlantCount()
+  
+  // Familya sayısını yükle
+  loadFamilyCount()
   
   // Araştırmacı sayısını yükle
   loadResearcherCount()

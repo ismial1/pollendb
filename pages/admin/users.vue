@@ -72,20 +72,28 @@
               <div class="text-sm text-gray-900">{{ user.email }}</div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
-              <select 
-                v-model="user.role" 
-                @change="updateUserRole(user)"
-                class="px-2 py-1 text-xs font-semibold rounded-full border-0 focus:ring-2 focus:ring-indigo-500"
-                :class="{
+              <div class="flex items-center space-x-2">
+                <span :class="{
+                  'px-2 py-1 text-xs font-semibold rounded-full': true,
                   'bg-purple-100 text-purple-800': user.role === 'admin',
                   'bg-blue-100 text-blue-800': user.role === 'user',
                   'bg-gray-100 text-gray-800': user.role === 'moderator'
-                }"
-              >
-                <option value="user">Kullanıcı</option>
-                <option value="moderator">Moderatör</option>
-                <option value="admin">Admin</option>
-              </select>
+                }">
+                  {{ user.role === 'admin' ? 'Admin' : 
+                     user.role === 'moderator' ? 'Moderatör' : 'Kullanıcı' }}
+                </span>
+                <select 
+                  v-model="user.role" 
+                  @change="updateUserRole(user)"
+                  class="px-2 py-1 text-xs border rounded focus:ring-2 focus:ring-indigo-500"
+                  :disabled="user.role === 'admin' || getCurrentUser()?.role !== 'admin'"
+                  :title="getRoleSelectTitle(user)"
+                >
+                  <option value="user">Kullanıcı</option>
+                  <option value="moderator">Moderatör</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
               <div class="text-sm text-gray-900">{{ formatDate(user.created_at) }}</div>
@@ -95,8 +103,8 @@
                 <button 
                   @click="deleteUser(user)" 
                   class="text-red-600 hover:text-red-900"
-                  :disabled="user.role === 'admin'"
-                  :title="user.role === 'admin' ? 'Admin kullanıcısı silinemez' : 'Kullanıcıyı sil'"
+                  :disabled="!canDeleteUser(user)"
+                  :title="getDeleteButtonTitle(user)"
                 >
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -208,6 +216,15 @@ const loadUsers = async () => {
 
 // Kullanıcı rolünü güncelle
 const updateUserRole = async (user) => {
+  // Sadece adminler rol değiştirebilir
+  const currentUser = getCurrentUser()
+  if (currentUser?.role !== 'admin') {
+    alert('Sadece adminler kullanıcı rollerini değiştirebilir!')
+    // Kullanıcıları yeniden yükle (rol değişikliğini geri al)
+    await loadUsers()
+    return
+  }
+  
   try {
     console.log('Güncellenecek kullanıcı:', user)
     
@@ -238,10 +255,51 @@ const updateUserRole = async (user) => {
   }
 }
 
+// Yetki kontrol fonksiyonları
+const getCurrentUser = () => {
+  const userData = localStorage.getItem('user')
+  return userData ? JSON.parse(userData) : null
+}
+
+const canDeleteUser = (user) => {
+  const currentUser = getCurrentUser()
+  
+  // Admin herkesi silebilir
+  if (currentUser?.role === 'admin') {
+    return true
+  }
+  
+  return false
+}
+
+const getDeleteButtonTitle = (user) => {
+  const currentUser = getCurrentUser()
+  
+  if (currentUser?.role === 'admin') {
+    return 'Kullanıcıyı sil'
+  }
+  
+  return 'Yetkiniz yok'
+}
+
+const getRoleSelectTitle = (user) => {
+  const currentUser = getCurrentUser()
+  
+  if (user.role === 'admin') {
+    return 'Admin rolü değiştirilemez'
+  }
+  
+  if (currentUser?.role !== 'admin') {
+    return 'Sadece adminler rol değiştirebilir'
+  }
+  
+  return 'Rol seçin'
+}
+
 // Kullanıcı sil
 const deleteUser = async (user) => {
-  if (user.role === 'admin') {
-    alert('Admin kullanıcısı silinemez!')
+  if (!canDeleteUser(user)) {
+    alert('Bu kullanıcıyı silme yetkiniz yok!')
     return
   }
   

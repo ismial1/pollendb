@@ -371,27 +371,36 @@ export interface Database {
         Row: {
           id: number
           user_id: string
+          user_email: string
+          user_name: string | null
           plant_data: any
-          status: string
+          status: 'pending' | 'approved' | 'rejected'
           admin_notes: string | null
+          admin_id: string | null
           created_at: string
           updated_at: string
         }
         Insert: {
           id?: number
           user_id: string
+          user_email: string
+          user_name?: string | null
           plant_data: any
-          status?: string
+          status?: 'pending' | 'approved' | 'rejected'
           admin_notes?: string | null
+          admin_id?: string | null
           created_at?: string
           updated_at?: string
         }
         Update: {
           id?: number
           user_id?: string
+          user_email?: string
+          user_name?: string | null
           plant_data?: any
-          status?: string
+          status?: 'pending' | 'approved' | 'rejected'
           admin_notes?: string | null
+          admin_id?: string | null
           created_at?: string
           updated_at?: string
         }
