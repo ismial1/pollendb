@@ -25,20 +25,21 @@
               E-posta <span class="text-red-500">*</span>
             </label>
             <div class="mt-1 relative">
-              <input
-                id="email"
-                v-model="form.email"
-                type="email"
-                required
-                :class="[
-                  'appearance-none block w-full px-3 py-2.5 border-2 rounded-lg transition-colors duration-200',
-                  errors.email 
-                    ? 'border-red-300 focus:ring-red-500 focus:border-red-500' 
-                    : 'border-gray-200 focus:ring-indigo-500 focus:border-indigo-500'
-                ]"
-                placeholder="ornek@email.com"
-                @blur="validateEmail"
-              >
+                             <input
+                 id="email"
+                 v-model="form.email"
+                 type="email"
+                 required
+                 autocomplete="username"
+                 :class="[
+                   'appearance-none block w-full px-3 py-2.5 border-2 rounded-lg transition-colors duration-200',
+                   errors.email 
+                     ? 'border-red-300 focus:ring-red-500 focus:border-red-500' 
+                     : 'border-gray-200 focus:ring-indigo-500 focus:border-indigo-500'
+                 ]"
+                 placeholder="ornek@email.com"
+                 @blur="validateEmail"
+               >
               <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
                 <svg 
                   v-if="errors.email" 
@@ -205,13 +206,15 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, computed, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 
 const router = useRouter()
+const route = useRoute()
 const showPassword = ref(false)
 const isLoading = ref(false)
 const apiError = ref('')
+const redirectPath = ref('')
 
 // Form state
 const form = ref({
@@ -255,6 +258,11 @@ const isFormValid = computed(() => {
          form.value.password && 
          !errors.value.email && 
          !errors.value.password
+})
+
+// Redirect parametresini al
+onMounted(() => {
+  redirectPath.value = route.query.redirect || '/'
 })
 
 // Hata durumu kontrolü
@@ -303,7 +311,8 @@ const handleLogin = async () => {
     // Header'ı güncellemek için custom event gönder
     document.dispatchEvent(new CustomEvent('auth-update'))
     
-    router.push('/')
+    // Redirect path'e yönlendir
+    router.push(redirectPath.value)
 
   } catch (error) {
     apiError.value = error.message || 'Bir hata oluştu. Lütfen tekrar deneyin.'

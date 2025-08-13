@@ -109,61 +109,6 @@ definePageMeta({
 // Durum filtresi
 const statusFilter = ref('all')
 
-// Örnek veriler
-const submissions = ref([
-  {
-    id: 1,
-    user: {
-      name: 'Ahmet Yılmaz',
-      email: 'ahmet@example.com'
-    },
-    date: '10.01.2024 14:30',
-    status: 'pending',
-    data: {
-      'Ad Soyad': 'Ahmet Yılmaz',
-      'TC Kimlik': '12345678901',
-      'Telefon': '0532 123 45 67',
-      'Adres': 'İstanbul, Türkiye'
-    },
-    attachments: [
-      { id: 1, name: 'kimlik.pdf', url: '#' },
-      { id: 2, name: 'belge.pdf', url: '#' }
-    ]
-  },
-  {
-    id: 2,
-    user: {
-      name: 'Mehmet Demir',
-      email: 'mehmet@example.com'
-    },
-    date: '09.01.2024 16:45',
-    status: 'approved',
-    data: {
-      'Ad Soyad': 'Mehmet Demir',
-      'TC Kimlik': '98765432109',
-      'Telefon': '0533 987 65 43',
-      'Adres': 'Ankara, Türkiye'
-    },
-    attachments: [
-      { id: 3, name: 'basvuru.pdf', url: '#' }
-    ]
-  },
-  {
-    id: 3,
-    user: {
-      name: 'Ayşe Kaya',
-      email: 'ayse@example.com'
-    },
-    date: '08.01.2024 09:15',
-    status: 'rejected',
-    data: {
-      'Ad Soyad': 'Ayşe Kaya',
-      'TC Kimlik': '45678901234',
-      'Telefon': '0535 456 78 90',
-      'Adres': 'İzmir, Türkiye'
-    }
-  }
-])
 
 // Filtrelenmiş başvurular
 const filteredSubmissions = computed(() => {

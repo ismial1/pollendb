@@ -254,7 +254,7 @@ CREATE TABLE users (
   id UUID REFERENCES auth.users(id) PRIMARY KEY,
   email VARCHAR(255) UNIQUE NOT NULL,
   full_name VARCHAR(255),
-  role VARCHAR(50) DEFAULT 'user',
+  role VARCHAR(50) DEFAULT 'user' CHECK (role IN ('user', 'moderator', 'admin')),
   avatar_url VARCHAR(500),
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()

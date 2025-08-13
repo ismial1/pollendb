@@ -33,7 +33,7 @@
       <div class="mt-16">
         <dl class="grid grid-cols-2 gap-8 md:grid-cols-4">
           <div class="text-center">
-            <dt class="text-2xl font-bold text-indigo-600">1000+</dt>
+            <dt class="text-2xl font-bold text-indigo-600">{{ plantCount }}+</dt>
             <dd class="mt-2 text-gray-600">Polen Türü</dd>
           </div>
           <div class="text-center">
@@ -45,7 +45,7 @@
             <dd class="mt-2 text-gray-600">Bitki Familyası</dd>
           </div>
           <div class="text-center">
-            <dt class="text-2xl font-bold text-indigo-600">20+</dt>
+            <dt class="text-2xl font-bold text-indigo-600">{{ researcherCount }}+</dt>
             <dd class="mt-2 text-gray-600">Araştırmacı</dd>
           </div>
         </dl>
@@ -112,5 +112,53 @@
 </template>
 
 <script setup>
-// Component logic here if needed
+import { ref, onMounted } from 'vue'
+import { useSupabase } from '~/composables/useSupabase'
+
+const { supabase } = useSupabase()
+const plantCount = ref(0)
+const researcherCount = ref(0)
+
+// Plant sayısını Supabase'den çek
+const loadPlantCount = async () => {
+  try {
+    const { count, error } = await supabase
+      .from('plants')
+      .select('*', { count: 'exact', head: true })
+    
+    if (error) {
+      console.error('Plant count error:', error)
+      return
+    }
+    
+    plantCount.value = count || 0
+  } catch (error) {
+    console.error('Plant count fetch error:', error)
+  }
+}
+
+// Araştırmacı sayısını Supabase'den çek (admin ve moderatör)
+const loadResearcherCount = async () => {
+  try {
+    const { count, error } = await supabase
+      .from('users')
+      .select('*', { count: 'exact', head: true })
+      .in('role', ['admin', 'moderator'])
+    
+    if (error) {
+      console.error('Researcher count error:', error)
+      return
+    }
+    
+    researcherCount.value = count || 0
+  } catch (error) {
+    console.error('Researcher count fetch error:', error)
+  }
+}
+
+// Sayfa yüklendiğinde verileri çek
+onMounted(() => {
+  loadPlantCount()
+  loadResearcherCount()
+})
 </script> 

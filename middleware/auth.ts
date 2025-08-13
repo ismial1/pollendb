@@ -39,5 +39,17 @@ export default defineNuxtRouteMiddleware((to, from) => {
         return navigateTo('/')
       }
     }
+    
+    // Submit-data sayfası için admin/moderator kontrolü
+    if (to.path === '/submit-data') {
+      try {
+        const user = JSON.parse(userData || '{}')
+        if (user.role !== 'admin' && user.role !== 'moderator') {
+          return navigateTo('/404')
+        }
+      } catch (error) {
+        return navigateTo('/404')
+      }
+    }
   }
 }) 

@@ -156,6 +156,10 @@ const searchQuery = ref('')
 const isLoading = ref(false)
 const error = ref('')
 
+// URL'den plant ID'sini al
+const route = useRoute()
+const plantIdFromUrl = route.query.plant as string
+
 // Supabase'den veri çek
 const fetchPlants = async () => {
   try {
@@ -176,8 +180,16 @@ const fetchPlants = async () => {
 }
 
 // Sayfa yüklendiğinde veri çek
-onMounted(() => {
-  fetchPlants()
+onMounted(async () => {
+  await fetchPlants()
+  
+  // URL'den plant ID varsa o bitkinin detaylarını göster
+  if (plantIdFromUrl) {
+    const plant = supabaseStore.plants.find(p => p.id === parseInt(plantIdFromUrl))
+    if (plant) {
+      selectedPlant.value = plant
+    }
+  }
 })
 
 // Alfabetik sıralama ve filtreleme

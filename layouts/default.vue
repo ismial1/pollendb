@@ -23,7 +23,7 @@
                 <NuxtLink to="/" :class="[currentRoute === '/' ? 'bg-blue-800 text-white' : 'text-gray-300 hover:bg-blue-600 hover:text-white', 'rounded-md px-3 py-2 text-sm font-medium']">
                   Ana Sayfa
                 </NuxtLink>
-                <NuxtLink to="/submit-data" :class="[currentRoute === '/submit-data' ? 'bg-blue-800 text-white' : 'text-gray-300 hover:bg-blue-600 hover:text-white', 'rounded-md px-3 py-2 text-sm font-medium']">
+                <NuxtLink v-if="isAdminOrModerator" to="/submit-data" :class="[currentRoute === '/submit-data' ? 'bg-blue-800 text-white' : 'text-gray-300 hover:bg-blue-600 hover:text-white', 'rounded-md px-3 py-2 text-sm font-medium']">
                   Veri Ekle
                 </NuxtLink>
                 
@@ -118,6 +118,11 @@
                     </MenuItems>
                   </transition>
                 </Menu>
+
+                <!-- İletişim Butonu -->
+                <NuxtLink to="/contact" :class="[currentRoute === '/contact' ? 'bg-blue-800 text-white' : 'text-gray-300 hover:bg-blue-600 hover:text-white', 'rounded-md px-3 py-2 text-sm font-medium']">
+                  İletişim
+                </NuxtLink>
                 
             
 
@@ -145,7 +150,19 @@
 
             <!-- Giriş yapıldıysa Profile dropdown -->
             <Menu v-else as="div" class="relative ml-3">
-              <div>
+              <div class="flex items-center space-x-3">
+                <!-- Admin Panel Girişi Butonu (Sadece adminler için) -->
+                <NuxtLink 
+                  v-if="isAdmin"
+                  to="/admin"
+                  class="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors duration-200"
+                >
+                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                  Panel Girişi
+                </NuxtLink>
+                
                 <MenuButton class="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                   <span class="absolute -inset-1.5" />
                   <span class="sr-only">Open user menu</span>
@@ -209,15 +226,32 @@
               Ana Sayfa
             </NuxtLink>
           </DisclosureButton>
-          <DisclosureButton as="div">
+          <DisclosureButton v-if="isAdminOrModerator" as="div">
             <NuxtLink to="/submit-data" :class="[currentRoute === '/submit-data' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'block rounded-md px-3 py-2 text-base font-medium']">
               Submit Data
+            </NuxtLink>
+          </DisclosureButton>
+
+          <!-- İletişim Butonu (Mobile) -->
+          <DisclosureButton as="div">
+            <NuxtLink to="/contact" :class="[currentRoute === '/contact' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'block rounded-md px-3 py-2 text-base font-medium flex items-center']">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              İletişim
             </NuxtLink>
           </DisclosureButton>
 
           <DisclosureButton as="div">
             <NuxtLink to="/profil" :class="[currentRoute === '/profil' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'block rounded-md px-3 py-2 text-base font-medium']">
               Profil
+            </NuxtLink>
+          </DisclosureButton>
+          
+          <!-- Admin Panel Girişi (Mobile) -->
+          <DisclosureButton v-if="isAdmin" as="div">
+            <NuxtLink to="/admin" :class="[currentRoute === '/admin' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'block rounded-md px-3 py-2 text-base font-medium']">
+              Panel Girişi
             </NuxtLink>
           </DisclosureButton>
 
@@ -243,11 +277,6 @@
           <DisclosureButton as="div">
             <NuxtLink to="/about" :class="[currentRoute === '/about' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'block rounded-md px-3 py-2 text-base font-medium']">
               Hakkımızda
-            </NuxtLink>
-          </DisclosureButton>
-          <DisclosureButton as="div">
-            <NuxtLink to="/contact" :class="[currentRoute === '/contact' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'block rounded-md px-3 py-2 text-base font-medium']">
-              İletişim
             </NuxtLink>
           </DisclosureButton>
         </div>
@@ -471,6 +500,16 @@ const userInitials = computed(() => {
     return (nameParts[0][0] + nameParts[1][0]).toUpperCase()
   }
   return user.value.full_name[0]?.toUpperCase() || 'U'
+})
+
+// Admin kontrolü
+const isAdmin = computed(() => {
+  return user.value?.role === 'admin'
+})
+
+// Admin veya Moderator kontrolü
+const isAdminOrModerator = computed(() => {
+  return user.value?.role === 'admin' || user.value?.role === 'moderator'
 })
 
 const handleLogout = async () => {

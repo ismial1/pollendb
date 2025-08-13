@@ -1034,7 +1034,7 @@ const handleSubmit = async () => {
           }
         }
         
-        console.log(`Toplam ${imageUrls.length} fotoğraf yüklendi`)
+
       } catch (error) {
         console.error('Image upload error:', error)
       }

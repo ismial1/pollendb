@@ -343,7 +343,7 @@ export interface Database {
           id: string
           email: string
           full_name: string | null
-          role: string
+          role: 'user' | 'moderator' | 'admin'
           avatar_url: string | null
           created_at: string
           updated_at: string
@@ -352,7 +352,7 @@ export interface Database {
           id: string
           email: string
           full_name?: string | null
-          role?: string
+          role?: 'user' | 'moderator' | 'admin'
           avatar_url?: string | null
           created_at?: string
           updated_at?: string
@@ -361,7 +361,7 @@ export interface Database {
           id?: string
           email?: string
           full_name?: string | null
-          role?: string
+          role?: 'user' | 'moderator' | 'admin'
           avatar_url?: string | null
           created_at?: string
           updated_at?: string
@@ -398,31 +398,34 @@ export interface Database {
       }
       messages: {
         Row: {
-          id: number
+          id: string
           name: string
           email: string
-          subject: string | null
+          subject: string
           message: string
-          status: string
+          status: 'unread' | 'read' | 'replied'
           created_at: string
+          updated_at: string
         }
         Insert: {
-          id?: number
+          id?: string
           name: string
           email: string
-          subject?: string | null
+          subject: string
           message: string
-          status?: string
+          status?: 'unread' | 'read' | 'replied'
           created_at?: string
+          updated_at?: string
         }
         Update: {
-          id?: number
+          id?: string
           name?: string
           email?: string
-          subject?: string | null
+          subject?: string
           message?: string
-          status?: string
+          status?: 'unread' | 'read' | 'replied'
           created_at?: string
+          updated_at?: string
         }
       }
     }

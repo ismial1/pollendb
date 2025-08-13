@@ -12,16 +12,12 @@
             <p class="text-xl text-gray-600">
               Türkiye'nin en kapsamlı polen veri tabanına hoş geldiniz. Binlerce polen örneği, detaylı analizler ve bilimsel araştırmalar tek platformda.
             </p>
-            <div class="flex space-x-4">
-              <NuxtLink to="/submit-data" 
-                class="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
-                Veri Ekle
-              </NuxtLink>
-              <NuxtLink to="search-data/alphabetical" 
-                class="px-6 py-3 border-2 border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-50 transition-colors">
-                Veritabanını Keşfet
-              </NuxtLink>
-            </div>
+                         <div class="flex space-x-4">
+               <NuxtLink to="search-data/alphabetical" 
+                 class="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                 Veritabanını Keşfet
+               </NuxtLink>
+             </div>
           </div>
 
           <!-- Sağ Taraf: Polen Görseli Slider -->
@@ -64,7 +60,7 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           <div class="p-6 bg-indigo-50 rounded-xl">
-            <div class="text-3xl font-bold text-indigo-600">5000+</div>
+            <div class="text-3xl font-bold text-indigo-600">{{ plantCount }}+</div>
             <div class="text-gray-600 mt-2">Polen Örneği</div>
           </div>
           <div class="p-6 bg-purple-50 rounded-xl">
@@ -72,7 +68,7 @@
             <div class="text-gray-600 mt-2">Bitki Familyası</div>
           </div>
           <div class="p-6 bg-indigo-50 rounded-xl">
-            <div class="text-3xl font-bold text-indigo-600">250+</div>
+            <div class="text-3xl font-bold text-indigo-600">{{ researcherCount }}+</div>
             <div class="text-gray-600 mt-2">Araştırmacı</div>
           </div>
           <div class="p-6 bg-purple-50 rounded-xl">
@@ -124,29 +120,35 @@
       </div>
     </div>
 
-    <!-- Son Eklenenler -->
-    <div class="bg-white py-16">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">Son Eklenen Polen Örnekleri</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div v-for="i in 3" :key="i" class="bg-gray-50 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-            <img src="/" alt="Polen Örneği" class="w-full h-48 object-cover"/>
-            <div class="p-6">
-              <h3 class="text-xl font-semibold text-gray-900 mb-2">Asteraceae Familyası</h3>
-              <p class="text-gray-600 mb-4">Helianthus annuus polen örneği ve detaylı analizi.</p>
-              <NuxtLink to="/plants/1" class="text-indigo-600 hover:text-indigo-700 font-medium">
-                Detayları İncele →
-              </NuxtLink>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+         <!-- Son Eklenenler -->
+     <div class="bg-white py-16">
+       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+         <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">Son Eklenen Polen Örnekleri</h2>
+         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+           <div v-for="plant in latestPlants" :key="plant.id" class="bg-gray-50 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+             <img :src="plant.image_url || '/images/pollen-1.jpg'" :alt="plant.name" class="w-full h-48 object-cover"/>
+             <div class="p-6">
+               <h3 class="text-xl font-semibold text-gray-900 mb-2">{{ plant.family }}</h3>
+               <p class="text-gray-600 mb-4">{{ plant.name }} polen örneği ve detaylı analizi.</p>
+                               <NuxtLink :to="`/search-data/alphabetical?plant=${plant.id}`" class="text-indigo-600 hover:text-indigo-700 font-medium">
+                  Detayları İncele →
+                </NuxtLink>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useSupabase } from '~/composables/useSupabase'
+
+const { supabase } = useSupabase()
+const plantCount = ref(0)
+const researcherCount = ref(0)
+const latestPlants = ref([])
 
 const sliderImages = [
   {
@@ -174,8 +176,75 @@ const sliderImages = [
 const currentSlide = ref(0)
 let intervalId = null
 
+// Plant sayısını Supabase'den çek
+const loadPlantCount = async () => {
+  try {
+    const { count, error } = await supabase
+      .from('plants')
+      .select('*', { count: 'exact', head: true })
+    
+    if (error) {
+      console.error('Plant count error:', error)
+      return
+    }
+    
+    plantCount.value = count || 0
+  } catch (error) {
+    console.error('Plant count fetch error:', error)
+  }
+}
+
+// Araştırmacı sayısını Supabase'den çek (admin ve moderatör)
+const loadResearcherCount = async () => {
+  try {
+    const { count, error } = await supabase
+      .from('users')
+      .select('*', { count: 'exact', head: true })
+      .in('role', ['admin', 'moderator'])
+    
+    if (error) {
+      console.error('Researcher count error:', error)
+      return
+    }
+    
+    researcherCount.value = count || 0
+  } catch (error) {
+    console.error('Researcher count fetch error:', error)
+  }
+}
+
+// Son eklenen 3 polen verisini çek
+const loadLatestPlants = async () => {
+  try {
+    const { data, error } = await supabase
+      .from('plants')
+      .select('id, name, family, image_url, created_at')
+      .order('created_at', { ascending: false })
+      .limit(3)
+    
+    if (error) {
+      console.error('Latest plants error:', error)
+      return
+    }
+    
+    latestPlants.value = data || []
+  } catch (error) {
+    console.error('Latest plants fetch error:', error)
+  }
+}
+
 // Otomatik geçiş için
 onMounted(() => {
+  // Plant sayısını yükle
+  loadPlantCount()
+  
+  // Araştırmacı sayısını yükle
+  loadResearcherCount()
+  
+  // Son eklenen polenleri yükle
+  loadLatestPlants()
+  
+  // Slider interval'i başlat
   intervalId = setInterval(() => {
     currentSlide.value = (currentSlide.value + 1) % sliderImages.length
   }, 4000) // Her 4 saniyede bir geçiş

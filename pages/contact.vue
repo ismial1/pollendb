@@ -57,7 +57,7 @@
       </div>
 
       <!-- İletişim Formu -->
-      <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+      <div v-if="isAuthenticated" class="bg-white rounded-2xl shadow-xl overflow-hidden">
         <div class="p-8">
           <form @submit.prevent="handleSubmit" class="space-y-6">
             <!-- İsim Soyisim -->
@@ -189,17 +189,38 @@
           </div>
         </div>
       </div>
+
+      <!-- Giriş Yapılmamışsa Gösterilecek Mesaj -->
+      <div v-if="!isAuthenticated" class="bg-white rounded-2xl shadow-xl overflow-hidden">
+        <div class="p-8 text-center">
+          <div class="mb-6">
+            <svg class="mx-auto h-16 w-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">Giriş Yapmanız Gerekiyor</h3>
+          <p class="text-gray-600 mb-6">İletişim formunu kullanabilmek için lütfen giriş yapın.</p>
+          <NuxtLink 
+            to="/auth/login" 
+            class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition-colors"
+          >
+            Giriş Yap
+          </NuxtLink>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useSupabaseStore } from '~/store/supabase'
+import { ref, onMounted } from 'vue'
+import { useSupabase } from '~/composables/useSupabase'
 
+const router = useRouter()
 const isLoading = ref(false)
 const successMessage = ref('')
 const errorMessage = ref('')
+const isAuthenticated = ref(false)
 
 const form = ref({
   name: '',
@@ -213,6 +234,27 @@ const errors = ref({
   email: '',
   subject: '',
   message: ''
+})
+
+// Giriş kontrolü
+const checkAuth = () => {
+  const userData = localStorage.getItem('user')
+  if (userData) {
+    const user = JSON.parse(userData)
+    isAuthenticated.value = true
+    // Kullanıcı bilgilerini forma otomatik doldur
+    form.value.name = user.full_name || ''
+    form.value.email = user.email || ''
+  } else {
+    // Giriş yapılmamışsa login sayfasına yönlendir
+    const currentPath = router.currentRoute.value.fullPath
+    router.push(`/auth/login?redirect=${encodeURIComponent(currentPath)}`)
+  }
+}
+
+// Sayfa yüklendiğinde giriş kontrolü yap
+onMounted(() => {
+  checkAuth()
 })
 
 const validateForm = () => {
@@ -272,26 +314,29 @@ const handleSubmit = async () => {
     errorMessage.value = ''
     successMessage.value = ''
 
-    const supabaseStore = useSupabaseStore()
+    const { supabase } = useSupabase()
     
     // Supabase'e mesaj gönder
-    const result = await supabaseStore.createMessage({
-      name: form.value.name,
-      email: form.value.email,
-      subject: form.value.subject,
-      message: form.value.message
-    })
+    const { data, error } = await supabase
+      .from('messages')
+      .insert({
+        name: form.value.name,
+        email: form.value.email,
+        subject: form.value.subject,
+        message: form.value.message,
+        status: 'unread'
+      })
 
-    if (result.success) {
-      successMessage.value = 'Mesajınız başarıyla gönderildi. En kısa sürede size dönüş yapacağız.'
-      form.value = {
-        name: '',
-        email: '',
-        subject: '',
-        message: ''
-      }
-    } else {
-      throw new Error(result.error || 'Mesaj gönderimi başarısız oldu')
+    if (error) {
+      throw error
+    }
+
+    successMessage.value = 'Mesajınız başarıyla gönderildi. En kısa sürede size dönüş yapacağız.'
+    form.value = {
+      name: '',
+      email: '',
+      subject: '',
+      message: ''
     }
   } catch (error) {
     console.error('Contact submit error:', error)

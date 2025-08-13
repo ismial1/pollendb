@@ -282,9 +282,6 @@ export const useSupabaseStore = defineStore('supabase', () => {
     error.value = null
     
     try {
-      console.log('Uploading file:', file.name, 'Size:', file.size, 'Type:', file.type)
-      console.log('FileName:', fileName)
-      
       // Önce bucket'ı kontrol et
       const { data: buckets, error: bucketError } = await supabase.storage.listBuckets()
       if (bucketError) {
@@ -292,16 +289,12 @@ export const useSupabaseStore = defineStore('supabase', () => {
         throw bucketError
       }
       
-      console.log('Available buckets:', buckets)
-      
       // plants bucket'ı var mı kontrol et
       const plantsBucket = buckets.find((bucket: any) => bucket.name === 'plants')
       if (!plantsBucket) {
         console.error('Plants bucket not found')
         throw new Error('Plants bucket not found')
       }
-      
-      console.log('Plants bucket found:', plantsBucket)
       
       // Resmi Storage'a yükle
       const { data, error: uploadError } = await supabase.storage
@@ -316,14 +309,11 @@ export const useSupabaseStore = defineStore('supabase', () => {
         throw uploadError
       }
       
-      console.log('Upload successful:', data)
-      
       // Public URL'ini al
       const { data: urlData } = supabase.storage
         .from('plants')
         .getPublicUrl(fileName)
       
-      console.log('Public URL:', urlData.publicUrl)
       return { success: true, url: urlData.publicUrl }
     } catch (err: any) {
       console.error('Image upload error:', err)
