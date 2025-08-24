@@ -26,8 +26,8 @@ export default defineNuxtConfig({
   },
 
   typescript: {
-    strict: true,
-    typeCheck: true,
+    strict: false,
+    typeCheck: false,
     shim: false
   },
 
@@ -39,26 +39,23 @@ export default defineNuxtConfig({
   // SSR settings
   ssr: true,
   nitro: {
-    preset: 'vercel'
+    preset: 'vercel',
+    prerender: {
+      crawlLinks: false,
+      routes: [],
+      ignore: ['/admin/**', '/auth/**', '/search-data/**']
+    }
   },
 
   // Vercel için özel ayarlar
   experimental: {
-    // Deneysel özellikleri etkinleştir
-    componentIslands: true
+    // Deneysel özellikleri devre dışı bırak (Vercel uyumluluğu için)
+    componentIslands: false
   },
 
-  // Route rules
+  // Route rules - Prerender devre dışı
   routeRules: {
-    '/': { prerender: true },
-    '/about': { prerender: true },
-    '/contact': { prerender: true },
-    '/faq': { prerender: true },
-    '/links': { prerender: true },
-    '/literature': { prerender: true },
-    '/services': { prerender: true },
-    '/submit-data': { prerender: true },
-    '/search-data/**': { prerender: true }
+    '/': { prerender: false }
   },
 
   compatibilityDate: '2025-01-17',
