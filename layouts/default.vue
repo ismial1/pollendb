@@ -5,7 +5,7 @@
         <div class="relative flex h-16 items-center justify-between">
           <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
             <!-- Mobile menu button-->
-            <DisclosureButton class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+            <DisclosureButton class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-blue-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
               <span class="absolute -inset-0.5" />
               <span class="sr-only">Open main menu</span>
               <Bars3Icon v-if="!open" class="block h-6 w-6" aria-hidden="true" />
@@ -65,59 +65,10 @@
 
               
 
-                <!-- Information Dropdown -->
-                <Menu as="div" class="relative">
-                  <MenuButton :class="[isInformationRoute ? 'bg-blue-800 text-white' : 'text-gray-300 hover:bg-blue-600 hover:text-white', 'rounded-md px-3 py-2 text-sm font-medium inline-flex items-center']">
-                    <span>Information</span>
-                    <ChevronDownIcon class="ml-2 h-4 w-4" aria-hidden="true" />
-                  </MenuButton>
-                  <transition
-                    enter-active-class="transition ease-out duration-100"
-                    enter-from-class="transform opacity-0 scale-95"
-                    enter-to-class="transform opacity-100 scale-100"
-                    leave-active-class="transition ease-in duration-75"
-                    leave-from-class="transform opacity-100 scale-100"
-                    leave-to-class="transform opacity-0 scale-95"
-                  >
-                    <MenuItems
-                      class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                    >
-                      <MenuItem v-slot="{ active }">
-                        <NuxtLink
-                          to="/about"
-                          :class="[
-                            active ? 'bg-gray-100' : '',
-                            'block px-4 py-2 text-sm text-gray-700 text-center'
-                          ]"
-                        >
-                          Hakkımızda
-                        </NuxtLink>
-                      </MenuItem>
-                      <MenuItem v-slot="{ active }">
-                        <NuxtLink
-                          to="/links"
-                          :class="[
-                            active ? 'bg-gray-100' : '',
-                            'block px-4 py-2 text-sm text-gray-700 text-center'
-                          ]"
-                        >
-                          Linkler
-                        </NuxtLink>
-                      </MenuItem>
-                      <MenuItem v-slot="{ active }">
-                        <NuxtLink 
-                          to="/literature"
-                          :class="[
-                            active ? 'bg-gray-100' : '',
-                            'block px-4 py-2 text-sm text-gray-700 text-center'
-                          ]"
-                        >
-                          Literatür
-                        </NuxtLink>
-                      </MenuItem>
-                    </MenuItems>
-                  </transition>
-                </Menu>
+                <!-- Hakkımızda Butonu -->
+                <NuxtLink to="/about" :class="[currentRoute === '/about' ? 'bg-blue-800 text-white' : 'text-gray-300 hover:bg-blue-600 hover:text-white', 'rounded-md px-3 py-2 text-sm font-medium']">
+                  Hakkımızda
+                </NuxtLink>
 
                 <!-- İletişim Butonu -->
                 <NuxtLink to="/contact" :class="[currentRoute === '/contact' ? 'bg-blue-800 text-white' : 'text-gray-300 hover:bg-blue-600 hover:text-white', 'rounded-md px-3 py-2 text-sm font-medium']">
@@ -220,65 +171,58 @@
         
 
       <DisclosurePanel class="sm:hidden">
-        <div class="space-y-1 px-2 pb-3 pt-2">
+        <div class="space-y-1 px-2 pb-3 pt-2 bg-gradient-to-r from-blue-600 to-blue-800">
           <DisclosureButton as="div">
-            <NuxtLink to="/" :class="[currentRoute === '/' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'block rounded-md px-3 py-2 text-base font-medium']">
+            <NuxtLink to="/" :class="[currentRoute === '/' ? 'bg-blue-800 text-white' : 'text-gray-300 hover:bg-blue-600 hover:text-white', 'block rounded-md px-3 py-2 text-base font-medium']">
               Ana Sayfa
             </NuxtLink>
           </DisclosureButton>
           <DisclosureButton v-if="isAdminOrModerator" as="div">
-            <NuxtLink to="/submit-data" :class="[currentRoute === '/submit-data' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'block rounded-md px-3 py-2 text-base font-medium']">
-              Submit Data
+            <NuxtLink to="/submit-data" :class="[currentRoute === '/submit-data' ? 'bg-blue-800 text-white' : 'text-gray-300 hover:bg-blue-600 hover:text-white', 'block rounded-md px-3 py-2 text-base font-medium']">
+              Veri Ekle
             </NuxtLink>
           </DisclosureButton>
 
-          <!-- İletişim Butonu (Mobile) -->
-          <DisclosureButton as="div">
-            <NuxtLink to="/contact" :class="[currentRoute === '/contact' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'block rounded-md px-3 py-2 text-base font-medium flex items-center']">
-              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+
+          <div class="w-full">
+            <button 
+              @click="isSearchOpen = !isSearchOpen"
+              class="flex items-center justify-between w-full px-3 py-2 text-base font-medium text-gray-300 hover:bg-blue-600 hover:text-white rounded-md transition-colors duration-200"
+            >
+              <span>Veri Ara</span>
+              <svg class="w-4 h-4 transition-transform duration-200" :class="{ 'rotate-180': isSearchOpen }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
               </svg>
-              İletişim
-            </NuxtLink>
-          </DisclosureButton>
-
-          <DisclosureButton as="div">
-            <NuxtLink to="/profil" :class="[currentRoute === '/profil' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'block rounded-md px-3 py-2 text-base font-medium']">
-              Profil
-            </NuxtLink>
-          </DisclosureButton>
-          
-          <!-- Admin Panel Girişi (Mobile) -->
-          <DisclosureButton v-if="isAdmin" as="div">
-            <NuxtLink to="/admin" :class="[currentRoute === '/admin' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'block rounded-md px-3 py-2 text-base font-medium']">
-              Panel Girişi
-            </NuxtLink>
-          </DisclosureButton>
-
-          <DisclosureButton as="div">
-            <NuxtLink to="/lab-team" :class="[currentRoute === '/lab-team' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'block rounded-md px-3 py-2 text-base font-medium']">
-              Lab-team
-            </NuxtLink>
-          </DisclosureButton>
-          
-          <!-- Mobile Search Data Links -->
-          <div class="pl-3">
-            <NuxtLink to="/search-data/alphabetical" :class="[currentRoute === '/search-data/alphabetical' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'block rounded-md px-3 py-2 text-base font-medium']">
-              Alphabetical
-            </NuxtLink>
-            <NuxtLink to="/search-data/combined" :class="[currentRoute === '/search-data/combined' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'block rounded-md px-3 py-2 text-base font-medium']">
-              Combined
-            </NuxtLink>
-            <NuxtLink to="/search-data/taxonomic" :class="[currentRoute === '/search-data/taxonomic' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'block rounded-md px-3 py-2 text-base font-medium']">
-              Taxonomic
-            </NuxtLink>
+            </button>
+            <div v-if="isSearchOpen" class="pl-6 mt-2 space-y-1">
+              <NuxtLink to="/search-data/alphabetical" :class="[currentRoute === '/search-data/alphabetical' ? 'bg-blue-800 text-white' : 'text-gray-300 hover:bg-blue-600 hover:text-white', 'block rounded-md px-3 py-2 text-sm font-medium']">
+                Alphabetical
+              </NuxtLink>
+              <NuxtLink to="/search-data/combined" :class="[currentRoute === '/search-data/combined' ? 'bg-blue-800 text-white' : 'text-gray-300 hover:bg-blue-600 hover:text-white', 'block rounded-md px-3 py-2 text-sm font-medium']">
+                Combined
+              </NuxtLink>
+              <NuxtLink to="/search-data/taxonomic" :class="[currentRoute === '/search-data/taxonomic' ? 'bg-blue-800 text-white' : 'text-gray-300 hover:bg-blue-600 hover:text-white', 'block rounded-md px-3 py-2 text-sm font-medium']">
+                Taxonomic
+              </NuxtLink>
+            </div>
           </div>
 
+    
+
           <DisclosureButton as="div">
-            <NuxtLink to="/about" :class="[currentRoute === '/about' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'block rounded-md px-3 py-2 text-base font-medium']">
+            <NuxtLink to="/about" :class="[currentRoute === '/about' ? 'bg-blue-800 text-white' : 'text-gray-300 hover:bg-blue-600 hover:text-white', 'block rounded-md px-3 py-2 text-base font-medium']">
               Hakkımızda
             </NuxtLink>
           </DisclosureButton>
+
+
+          <DisclosureButton as="div">
+            <NuxtLink to="/contact" :class="[currentRoute === '/contact' ? 'bg-blue-800 text-white' : 'text-gray-300 hover:bg-blue-600 hover:text-white', 'block rounded-md px-3 py-2 text-base font-medium flex items-center']">
+              
+              İletişim
+            </NuxtLink>
+          </DisclosureButton>
+          
         </div>
       </DisclosurePanel>
     </Disclosure>
@@ -459,10 +403,10 @@ const isSearchRoute = computed(() => {
   return currentRoute.value.startsWith('/search-data')
 })
 
-// Information sayfalarından birinde mi kontrol et
-const isInformationRoute = computed(() => {
-  return ['/about', '/links', '/literature'].includes(currentRoute.value)
-})
+
+
+// Mobile search dropdown durumu
+const isSearchOpen = ref(false)
 
 // Authentication state
 const isAuthenticated = ref(false)

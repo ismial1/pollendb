@@ -3,14 +3,17 @@
     <!-- Header -->
     <div class="bg-white shadow">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center py-6">
-  <div>
+        <div class="py-6">
+          <!-- Başlık -->
+          <div class="mb-4">
             <h1 class="text-2xl font-bold text-gray-900">Veri Onayları</h1>
             <p class="mt-1 text-sm text-gray-500">
               Kullanıcıların gönderdiği verileri inceleyin ve onaylayın
             </p>
           </div>
-      <div class="flex space-x-3">
+          
+          <!-- Yenile Butonu -->
+          <div class="flex justify-end">
             <button
               @click="refreshSubmissions"
               :disabled="loading"
@@ -29,8 +32,8 @@
     <!-- Content -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <!-- Stats -->
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div class="bg-white rounded-lg shadow p-6">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8">
+        <div class="bg-white rounded-lg shadow p-4 lg:p-6">
           <div class="flex items-center">
             <div class="flex-shrink-0">
               <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center">
@@ -39,14 +42,14 @@
                 </svg>
               </div>
             </div>
-            <div class="ml-4">
-              <p class="text-sm font-medium text-gray-500">Bekleyen</p>
-              <p class="text-2xl font-semibold text-gray-900">{{ stats.pending }}</p>
+            <div class="ml-3 lg:ml-4">
+              <p class="text-xs lg:text-sm font-medium text-gray-500">Bekleyen</p>
+              <p class="text-lg lg:text-2xl font-semibold text-gray-900">{{ stats.pending }}</p>
             </div>
           </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow p-6">
+        <div class="bg-white rounded-lg shadow p-4 lg:p-6">
           <div class="flex items-center">
             <div class="flex-shrink-0">
               <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
@@ -55,14 +58,14 @@
                 </svg>
               </div>
             </div>
-            <div class="ml-4">
-              <p class="text-sm font-medium text-gray-500">Onaylanan</p>
-              <p class="text-2xl font-semibold text-gray-900">{{ stats.approved }}</p>
+            <div class="ml-3 lg:ml-4">
+              <p class="text-xs lg:text-sm font-medium text-gray-500">Onaylanan</p>
+              <p class="text-lg lg:text-2xl font-semibold text-gray-900">{{ stats.approved }}</p>
             </div>
           </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow p-6">
+        <div class="bg-white rounded-lg shadow p-4 lg:p-6">
           <div class="flex items-center">
             <div class="flex-shrink-0">
               <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
@@ -71,14 +74,14 @@
                 </svg>
               </div>
             </div>
-            <div class="ml-4">
-              <p class="text-sm font-medium text-gray-500">Reddedilen</p>
-              <p class="text-2xl font-semibold text-gray-900">{{ stats.rejected }}</p>
+            <div class="ml-3 lg:ml-4">
+              <p class="text-xs lg:text-sm font-medium text-gray-500">Reddedilen</p>
+              <p class="text-lg lg:text-2xl font-semibold text-gray-900">{{ stats.rejected }}</p>
             </div>
           </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow p-6">
+        <div class="bg-white rounded-lg shadow p-4 lg:p-6">
           <div class="flex items-center">
             <div class="flex-shrink-0">
               <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
@@ -87,9 +90,9 @@
                 </svg>
               </div>
             </div>
-            <div class="ml-4">
-              <p class="text-sm font-medium text-gray-500">Toplam</p>
-              <p class="text-2xl font-semibold text-gray-900">{{ stats.total }}</p>
+            <div class="ml-3 lg:ml-4">
+              <p class="text-xs lg:text-sm font-medium text-gray-500">Toplam</p>
+              <p class="text-lg lg:text-2xl font-semibold text-gray-900">{{ stats.total }}</p>
             </div>
           </div>
         </div>
@@ -97,30 +100,32 @@
 
       <!-- Filters -->
       <div class="bg-white rounded-lg shadow mb-6">
-        <div class="px-6 py-4 border-b border-gray-200">
-          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
-            <div class="flex items-center space-x-4">
-              <div>
-                <label for="status-filter" class="block text-sm font-medium text-gray-700">Durum</label>
-        <select 
-                  id="status-filter"
-          v-model="statusFilter"
-                  class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-        >
-                  <option value="">Tümü</option>
-          <option value="pending">Bekleyen</option>
-          <option value="approved">Onaylanan</option>
-          <option value="rejected">Reddedilen</option>
-        </select>
-      </div>
+        <div class="px-4 lg:px-6 py-4 border-b border-gray-200">
+          <div class="space-y-4">
+            <!-- Durum Filtresi -->
+            <div>
+              <label for="status-filter" class="block text-sm font-medium text-gray-700 mb-2">Durum</label>
+              <select 
+                id="status-filter"
+                v-model="statusFilter"
+                class="block w-full pl-3 pr-10 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              >
+                <option value="">Tümü</option>
+                <option value="pending">Bekleyen</option>
+                <option value="approved">Onaylanan</option>
+                <option value="rejected">Reddedilen</option>
+              </select>
             </div>
-            <div class="flex items-center space-x-4">
+            
+            <!-- Arama -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Arama</label>
               <div class="relative">
                 <input
                   v-model="searchQuery"
                   type="text"
                   placeholder="Bitki adı veya kullanıcı ara..."
-                  class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
                 />
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -208,10 +213,10 @@
 
     <!-- Submission Detail Modal -->
     <div v-if="selectedSubmission" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-      <div class="relative top-20 mx-auto p-5 border w-11/12 max-w-4xl shadow-lg rounded-md bg-white">
+      <div class="relative top-4 lg:top-20 mx-auto p-4 lg:p-5 border w-11/12 max-w-4xl shadow-lg rounded-md bg-white">
         <div class="mt-3">
           <!-- Modal Header -->
-          <div class="flex justify-between items-start mb-6">
+          <div class="flex flex-col lg:flex-row lg:justify-between lg:items-start mb-6 space-y-3 lg:space-y-0">
             <div>
               <h3 class="text-lg font-medium text-gray-900">{{ selectedSubmission.plant_data.name }}</h3>
               <p class="text-sm text-gray-500">{{ selectedSubmission.plant_data.family }}</p>
@@ -219,7 +224,7 @@
                 {{ selectedSubmission.user_name }} ({{ selectedSubmission.user_email }}) tarafından {{ formatDate(selectedSubmission.created_at) }}
               </p>
             </div>
-            <button @click="selectedSubmission = null" class="text-gray-400 hover:text-gray-500">
+            <button @click="selectedSubmission = null" class="text-gray-400 hover:text-gray-500 self-end lg:self-auto">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
@@ -231,7 +236,7 @@
             <!-- Images -->
             <div v-if="selectedSubmission.plant_data.image_url || selectedSubmission.plant_data.images">
               <h4 class="text-sm font-medium text-gray-900 mb-3">Fotoğraflar</h4>
-              <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <img
                   v-if="selectedSubmission.plant_data.image_url"
                   :src="selectedSubmission.plant_data.image_url"
@@ -246,20 +251,20 @@
                   class="h-24 w-full object-cover rounded-lg"
                 />
               </div>
-        </div>
+            </div>
 
             <!-- Plant Data -->
             <div>
               <h4 class="text-sm font-medium text-gray-900 mb-3">Bitki Verileri</h4>
               <div class="bg-gray-50 rounded-lg p-4">
-                <dl class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                <dl class="grid grid-cols-1 lg:grid-cols-2 gap-4 text-sm">
                   <div v-for="(value, key) in selectedSubmission.plant_data" :key="key">
                     <dt class="font-medium text-gray-700">{{ getFieldLabel(key) }}</dt>
                     <dd class="text-gray-900">{{ value || '-' }}</dd>
                   </div>
                 </dl>
+              </div>
             </div>
-          </div>
 
             <!-- Admin Notes -->
             <div v-if="selectedSubmission.admin_notes">
@@ -274,15 +279,15 @@
             <button 
                 @click="rejectSubmission(selectedSubmission)"
                 class="px-4 py-2 text-sm font-medium text-red-700 bg-red-100 hover:bg-red-200 rounded-md"
-            >
-              Reddet
-            </button>
-            <button 
+              >
+                Reddet
+              </button>
+              <button 
                 @click="approveSubmission(selectedSubmission)"
                 class="px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-md"
-            >
+              >
                 Onayla
-            </button>
+              </button>
             </div>
           </div>
         </div>

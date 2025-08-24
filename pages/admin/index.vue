@@ -45,20 +45,7 @@
         </div>
       </div>
 
-      <!-- Hızlı İşlemler -->
-      <div class="bg-white rounded-lg shadow">
-        <div class="p-4 border-b">
-          <h2 class="text-lg font-semibold">Hızlı İşlemler</h2>
-        </div>
-        <div class="p-4 grid grid-cols-2 gap-4">
-          <button v-for="action in quickActions" :key="action.title"
-                  @click="action.onClick"
-                  class="flex items-center p-3 rounded-lg border hover:bg-gray-50">
-            <component :is="action.icon" class="w-5 h-5 text-gray-500"/>
-            <span class="ml-2 text-sm">{{ action.title }}</span>
-          </button>
-        </div>
-      </div>
+      
     </div>
   </div>
   </div>
@@ -267,21 +254,5 @@ const formatTimeAgo = (dateString) => {
   }
 }
 
-const quickActions = [
-  {
-    title: 'Yeni Kullanıcı',
-    icon: 'UserPlusIcon',
-    onClick: () => navigateTo('/admin/users')
-  },
-  {
-    title: 'Rapor Oluştur',
-    icon: 'DocumentIcon',
-    onClick: () => console.log('Rapor oluştur')
-  },
-  {
-    title: 'Yedekleme',
-    icon: 'DatabaseIcon',
-    onClick: () => console.log('Yedekleme başlat')
-  }
-]
+
 </script> 

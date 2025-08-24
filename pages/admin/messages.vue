@@ -1,39 +1,49 @@
 <template>
   <div>
     <!-- Başlık ve Arama -->
-    <div class="mb-6 flex justify-between items-center">
-      <h1 class="text-2xl font-semibold text-gray-900">Mesajlar</h1>
-      <div class="flex space-x-3">
+    <div class="mb-6">
+      <!-- Başlık -->
+      <div class="mb-4">
+        <h1 class="text-2xl font-semibold text-gray-900">Mesajlar</h1>
+      </div>
+      
+      <!-- Filtreler ve Butonlar -->
+      <div class="space-y-3">
+        <!-- Arama -->
         <div class="relative">
           <input 
             type="text" 
             v-model="searchQuery"
             placeholder="Mesajlarda ara..." 
-            class="pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            class="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
           <svg class="w-5 h-5 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
         </div>
-        <select 
-          v-model="statusFilter"
-          class="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        >
-          <option value="all">Tüm Mesajlar</option>
-          <option value="unread">Okunmamış</option>
-          <option value="read">Okunmuş</option>
-          <option value="replied">Yanıtlandı</option>
-        </select>
-        <button
-          @click="refreshMessages"
-          :disabled="loading"
-          class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
-        >
-          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-          </svg>
-          Yenile
-        </button>
+        
+        <!-- Filtreler ve Yenile -->
+        <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
+          <select 
+            v-model="statusFilter"
+            class="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            <option value="all">Tüm Mesajlar</option>
+            <option value="unread">Okunmamış</option>
+            <option value="read">Okunmuş</option>
+            <option value="replied">Yanıtlandı</option>
+          </select>
+          <button
+            @click="refreshMessages"
+            :disabled="loading"
+            class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+          >
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            Yenile
+          </button>
+        </div>
       </div>
     </div>
 
@@ -43,8 +53,8 @@
       <span class="ml-3 text-gray-600">Mesajlar yükleniyor...</span>
     </div>
 
-    <!-- Mesaj Listesi -->
-    <div v-else-if="filteredMessages.length > 0" class="bg-white rounded-lg shadow overflow-hidden">
+    <!-- Desktop Mesaj Listesi -->
+    <div v-else-if="filteredMessages.length > 0" class="bg-white rounded-lg shadow overflow-hidden hidden lg:block">
       <div class="divide-y divide-gray-200">
         <div v-for="message in filteredMessages" 
              :key="message.id" 
@@ -115,6 +125,83 @@
             <h4 class="text-base font-medium text-gray-900">{{ message.subject }}</h4>
             <p class="mt-1 text-sm text-gray-600 line-clamp-2">{{ message.message }}</p>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobil Mesaj Kartları -->
+    <div v-else-if="filteredMessages.length > 0" class="lg:hidden space-y-4">
+      <div v-for="message in filteredMessages" 
+           :key="message.id" 
+           :class="['bg-white rounded-lg shadow p-4 cursor-pointer',
+                   {'bg-indigo-50': message.status === 'unread'}]"
+           @click="openMessage(message)">
+        <!-- Gönderen Bilgisi -->
+        <div class="flex items-start space-x-3 mb-4">
+          <div class="flex-shrink-0">
+            <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
+              <span class="text-gray-600 font-medium text-lg">{{ message.name[0].toUpperCase() }}</span>
+            </div>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="text-lg font-medium text-gray-900 mb-1">{{ message.name }}</h3>
+            <p class="text-sm text-gray-500 mb-2">{{ message.email }}</p>
+            <p class="text-xs text-gray-400">{{ formatDate(message.created_at) }}</p>
+          </div>
+        </div>
+
+        <!-- Durum -->
+        <div class="mb-3">
+          <span v-if="message.status === 'unread'" 
+                class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800">
+            Yeni
+          </span>
+          <span v-else-if="message.status === 'read'" 
+                class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
+            Okundu
+          </span>
+          <span v-else-if="message.status === 'replied'" 
+                class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+            Yanıtlandı
+          </span>
+        </div>
+
+        <!-- Mesaj İçeriği -->
+        <div class="mb-4">
+          <h4 class="text-base font-medium text-gray-900 mb-2">{{ message.subject }}</h4>
+          <p class="text-sm text-gray-600 line-clamp-3">{{ message.message }}</p>
+        </div>
+
+        <!-- Aksiyon Butonları -->
+        <div class="flex items-center justify-between pt-3 border-t border-gray-200">
+          <div class="flex items-center space-x-2">
+            <button @click.stop="markAsRead(message)" 
+                    v-if="message.status === 'unread'"
+                    class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-600 bg-gray-100 border border-gray-200 rounded-lg hover:bg-gray-200 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                    title="Okundu olarak işaretle">
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Okundu
+            </button>
+            <button @click.stop="markAsReplied(message)" 
+                    v-if="message.status !== 'replied'"
+                    class="inline-flex items-center px-3 py-2 text-sm font-medium text-green-600 bg-green-100 border border-green-200 rounded-lg hover:bg-green-200 hover:text-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                    title="Yanıtlandı olarak işaretle">
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+              </svg>
+              Yanıtlandı
+            </button>
+          </div>
+          <button @click.stop="deleteMessage(message.id)" 
+                  class="inline-flex items-center px-3 py-2 text-sm font-medium text-red-600 bg-red-100 border border-red-200 rounded-lg hover:bg-red-200 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+                  title="Mesajı sil">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+            Sil
+          </button>
         </div>
       </div>
     </div>

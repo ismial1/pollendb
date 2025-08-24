@@ -1,23 +1,31 @@
 <template>
   <div>
     <!-- Başlık ve Arama Bölümü -->
-    <div class="mb-6 flex justify-between items-center">
-      <h1 class="text-2xl font-semibold text-gray-900">Kullanıcı Yönetimi</h1>
-      <div class="flex space-x-3">
-        <div class="relative">
+    <div class="mb-6">
+      <!-- Başlık -->
+      <div class="mb-4">
+        <h1 class="text-2xl font-semibold text-gray-900">Kullanıcı Yönetimi</h1>
+      </div>
+      
+      <!-- Arama ve Butonlar -->
+      <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-3 sm:space-y-0 sm:space-x-3">
+        <!-- Arama -->
+        <div class="relative flex-1 sm:max-w-xs">
           <input 
             type="text" 
             v-model="searchQuery"
             placeholder="Kullanıcı ara..." 
-            class="pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            class="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
           <svg class="w-5 h-5 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
         </div>
+        
+        <!-- Yenile Butonu -->
         <button 
           @click="refreshUsers"
-          class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center"
+          class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center justify-center sm:w-auto"
         >
           <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -43,8 +51,8 @@
       </div>
     </div>
 
-    <!-- Kullanıcı Tablosu -->
-    <div v-else class="bg-white rounded-lg shadow overflow-hidden">
+    <!-- Kullanıcı Tablosu (Desktop) -->
+    <div v-if="!loading && !error && filteredUsers.length > 0" class="bg-white rounded-lg shadow overflow-hidden hidden lg:block">
       <table class="min-w-full divide-y divide-gray-200">
         <thead class="bg-gray-50">
           <tr>
@@ -115,6 +123,72 @@
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <!-- Mobil Kullanıcı Kartları -->
+    <div v-if="!loading && !error && filteredUsers.length > 0" class="lg:hidden space-y-4">
+      <div v-for="user in filteredUsers" :key="user.id" class="bg-white rounded-lg shadow p-4">
+        <!-- Kullanıcı Bilgileri -->
+        <div class="flex items-center mb-4">
+          <div class="h-12 w-12 rounded-full bg-gray-200 flex items-center justify-center">
+            <span class="text-xl font-medium text-gray-600">{{ user.full_name ? user.full_name.charAt(0) : user.email.charAt(0) }}</span>
+          </div>
+          <div class="ml-4 flex-1">
+            <div class="text-lg font-medium text-gray-900">{{ user.full_name || 'İsimsiz Kullanıcı' }}</div>
+            <div class="text-sm text-gray-500">{{ user.email }}</div>
+            <div class="text-xs text-gray-400 mt-1">ID: {{ user.id }}</div>
+          </div>
+        </div>
+
+        <!-- Rol ve Tarih -->
+        <div class="flex flex-wrap items-center justify-between mb-4 space-y-2">
+          <div class="flex items-center space-x-2">
+            <span :class="{
+              'px-3 py-1 text-sm font-semibold rounded-full': true,
+              'bg-purple-100 text-purple-800': user.role === 'admin',
+              'bg-blue-100 text-blue-800': user.role === 'user',
+              'bg-gray-100 text-gray-800': user.role === 'moderator'
+            }">
+              {{ user.role === 'admin' ? 'Admin' : 
+                 user.role === 'moderator' ? 'Moderatör' : 'Kullanıcı' }}
+            </span>
+          </div>
+          <div class="text-sm text-gray-500">
+            {{ formatDate(user.created_at) }}
+          </div>
+        </div>
+
+        <!-- Rol Değiştirme -->
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Rol Değiştir:</label>
+          <select 
+            v-model="user.role" 
+            @change="updateUserRole(user)"
+            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            :disabled="user.role === 'admin' || getCurrentUser()?.role !== 'admin'"
+            :title="getRoleSelectTitle(user)"
+          >
+            <option value="user">Kullanıcı</option>
+            <option value="moderator">Moderatör</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+
+        <!-- İşlemler -->
+        <div class="flex justify-end">
+          <button 
+            @click="deleteUser(user)" 
+            class="inline-flex items-center px-3 py-2 text-sm font-medium text-red-600 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+            :disabled="!canDeleteUser(user)"
+            :title="getDeleteButtonTitle(user)"
+          >
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+            Sil
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- Boş Durum -->
