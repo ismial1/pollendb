@@ -2,7 +2,7 @@
   "buildCommand": "nuxt build",
   "devCommand": "nuxt dev",
   "installCommand": "yarn install",
-  "framework": "nuxt",
+  "framework": "nuxtjs",
   "outputDirectory": ".output/public",
   "functions": {
     "app/server/index.mjs": {
