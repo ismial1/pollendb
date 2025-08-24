@@ -36,15 +36,10 @@ export default defineNuxtConfig({
     pageTransition: { name: 'page', mode: 'out-in' }
   },
 
-  // SSR settings
-  ssr: true,
+  // SSR settings - SPA mode for Vercel
+  ssr: false,
   nitro: {
-    preset: 'vercel',
-    prerender: {
-      crawlLinks: false,
-      routes: [],
-      ignore: ['/admin/**', '/auth/**', '/search-data/**']
-    }
+    preset: 'vercel'
   },
 
   // Vercel için özel ayarlar
@@ -53,10 +48,7 @@ export default defineNuxtConfig({
     componentIslands: false
   },
 
-  // Route rules - Prerender devre dışı
-  routeRules: {
-    '/': { prerender: false }
-  },
+
 
   compatibilityDate: '2025-01-17',
 
