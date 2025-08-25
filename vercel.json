@@ -4,11 +4,6 @@
   "installCommand": "yarn install",
   "framework": "nuxtjs",
   "outputDirectory": ".output/public",
-  "functions": {
-    "api/**/*.mjs": {
-      "maxDuration": 30
-    }
-  },
   "regions": ["fra1"],
   "env": {
     "NODE_ENV": "production"
