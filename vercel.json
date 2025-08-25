@@ -5,7 +5,7 @@
   "framework": "nuxtjs",
   "outputDirectory": ".output/public",
   "functions": {
-    "app/server/index.mjs": {
+    "api/**/*.mjs": {
       "maxDuration": 30
     }
   },
