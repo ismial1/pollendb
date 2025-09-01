@@ -158,9 +158,9 @@ const researcherCount = ref(0)
 const latestPlants = ref([])
 
 const sliderImages = [
-{
+  {
     id: 1,
-    src: '/images/8 Ocak 30(1).mp4',
+    src: '/images/video-1.mp4',
     alt: 'Polen Analiz Videosu',
     type: 'video'
   }
