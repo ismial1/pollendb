@@ -31,11 +31,17 @@
                 <div 
                   class="absolute inset-0 w-full h-full transition-opacity duration-500"
                 >
-                  <img 
-                    :src="sliderImages[currentSlide].src" 
+                 
+                  <video
+                    v-if="sliderImages[currentSlide].type === 'video'"
+                    :src="sliderImages[currentSlide].src"
                     :alt="sliderImages[currentSlide].alt"
                     class="w-full h-full object-cover"
-                  />
+                    autoplay
+                    muted
+                    loop
+                   
+                  ></video>
                 </div>
 
                 <!-- Slider Kontrolleri -->
@@ -152,30 +158,41 @@ const researcherCount = ref(0)
 const latestPlants = ref([])
 
 const sliderImages = [
-  {
+{
     id: 1,
-    src: '/images/pollen-1.jpg',
-    alt: 'Polen Mikroskop Görüntüsü 1'
-  },
-  {
-    id: 2,
-    src: '/images/pollen-2.jpg',
-    alt: 'Polen Mikroskop Görüntüsü 2'
-  },
-  {
-    id: 3,
-    src: '/images/pollen-3.jpg',
-    alt: 'Polen Mikroskop Görüntüsü 3'
-  },
-  {
-    id: 4,
-    src: '/images/pollen-4.jpg',
-    alt: 'Polen Mikroskop Görüntüsü 4'
+    src: '/images/8 Ocak 30(1).mp4',
+    alt: 'Polen Analiz Videosu',
+    type: 'video'
   }
 ]
 
 const currentSlide = ref(0)
 let intervalId = null
+let isSliderPaused = false
+
+// Slider'ı duraklat (video oynatılırken)
+const pauseSlider = () => {
+  isSliderPaused = true
+  if (intervalId) {
+    clearInterval(intervalId)
+    intervalId = null
+  }
+}
+
+// Slider'ı devam ettir (video durduğunda)
+const resumeSlider = () => {
+  isSliderPaused = false
+  startSlider()
+}
+
+// Slider'ı başlat
+const startSlider = () => {
+  if (isSliderPaused) return
+  
+  intervalId = setInterval(() => {
+    currentSlide.value = (currentSlide.value + 1) % sliderImages.length
+  }, 4000) // Her 4 saniyede bir geçiş
+}
 
 // Plant sayısını Supabase'den çek
 const loadPlantCount = async () => {
@@ -269,9 +286,7 @@ onMounted(() => {
   loadLatestPlants()
   
   // Slider interval'i başlat
-  intervalId = setInterval(() => {
-    currentSlide.value = (currentSlide.value + 1) % sliderImages.length
-  }, 4000) // Her 4 saniyede bir geçiş
+  startSlider()
 })
 
 // Component unmount olduğunda interval'i temizle

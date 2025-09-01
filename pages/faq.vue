@@ -127,7 +127,7 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 
 // Kategoriler
-const categories = ['Tümü', 'Genel', 'Teknik', 'Ödeme', 'Güvenlik']
+const categories = ['Tümü', 'Genel', 'Teknik', 'Güvenlik']
 const selectedCategory = ref('Tümü')
 
 // Arama
@@ -151,35 +151,7 @@ const faqs = [
     answer: 'Giriş sayfasındaki "Şifremi Unuttum" linkine tıklayarak şifre sıfırlama talimatlarını takip edebilirsiniz.',
     category: 'Güvenlik'
   },
-  {
-    question: 'Ödeme yöntemleri nelerdir?',
-    answer: 'Kredi kartı, banka kartı, havale/EFT ve kapıda ödeme seçeneklerimiz mevcuttur. Tüm ödemeleriniz 256-bit SSL ile güvence altındadır.',
-    category: 'Ödeme',
-    links: [
-      { text: 'Ödeme Seçenekleri', url: '/payment-options' }
-    ]
-  },
-  {
-    question: 'İade ve değişim politikanız nedir?',
-    answer: 'Satın aldığınız ürünleri 14 gün içinde iade edebilir veya değiştirebilirsiniz. İade sürecini başlatmak için hesabınızdan sipariş detaylarına giderek iade talebinde bulunabilirsiniz.',
-    category: 'Genel',
-    links: [
-      { text: 'İade Politikası', url: '/return-policy' }
-    ]
-  },
-  {
-    question: 'Kargo takibini nasıl yapabilirim?',
-    answer: 'Siparişinizin kargo takibini hesabınızdaki "Siparişlerim" bölümünden yapabilirsiniz. Ayrıca size SMS ve e-posta ile kargo takip numarası gönderilecektir.',
-    category: 'Genel'
-  },
-  {
-    question: 'İki faktörlü doğrulamayı nasıl etkinleştirebilirim?',
-    answer: 'Hesap güvenliğinizi artırmak için hesap ayarlarınızdan iki faktörlü doğrulamayı etkinleştirebilirsiniz. SMS veya authenticator uygulaması seçeneklerinden birini tercih edebilirsiniz.',
-    category: 'Güvenlik',
-    links: [
-      { text: 'Güvenlik Ayarları', url: '/security-settings' }
-    ]
-  },
+
   {
     question: 'Teknik destek için nasıl iletişime geçebilirim?',
     answer: 'Teknik destek ekibimize 7/24 canlı destek üzerinden ulaşabilir veya support@example.com adresine e-posta gönderebilirsiniz.',
@@ -192,20 +164,8 @@ const faqs = [
     question: 'Site SSL sertifikası kullanıyor mu?',
     answer: 'Evet, sitemiz en güncel SSL sertifikası kullanmaktadır. Tüm verileriniz şifrelenerek korunmaktadır.',
     category: 'Teknik'
-  },
-  {
-    question: 'Faturamı nasıl görüntüleyebilirim?',
-    answer: 'Faturalarınızı hesabınızdaki "Faturalarım" bölümünden görüntüleyebilir ve indirebilirsiniz. E-faturalarınız ayrıca kayıtlı e-posta adresinize de gönderilmektedir.',
-    category: 'Ödeme'
-  },
-  {
-    question: 'Taksit seçenekleri mevcut mu?',
-    answer: 'Evet, anlaşmalı bankaların kredi kartlarına 2-12 taksit seçenekleri sunuyoruz. Taksit seçeneklerini ödeme sayfasında görebilirsiniz.',
-    category: 'Ödeme',
-    links: [
-      { text: 'Taksit Tablosu', url: '/installment-options' }
-    ]
   }
+  
 ]
 
 // Filtreleme

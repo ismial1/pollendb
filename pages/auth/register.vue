@@ -44,7 +44,7 @@
                     ? 'border-red-300 focus:ring-red-500 focus:border-red-500' 
                     : 'border-gray-200 focus:ring-indigo-500 focus:border-indigo-500'
                 ]"
-                placeholder="John Doe"
+                placeholder="Ad Soyad"
                 @blur="validateFullName"
               >
               <div v-if="errors.fullName" class="absolute inset-y-0 right-0 pr-3 flex items-center">
@@ -85,6 +85,226 @@
             <p v-if="errors.email" class="mt-1 text-sm text-red-600">{{ errors.email }}</p>
           </div>
 
+          <!-- Ünvan -->
+          <div>
+            <label for="title" class="block text-sm font-medium text-gray-700">
+              Ünvan <span class="text-red-500">*</span>
+            </label>
+            <div class="mt-1 relative">
+              <select
+                id="title"
+                v-model="form.title"
+                required
+                :class="[
+                  'appearance-none block w-full px-3 py-2.5 border-2 rounded-lg transition-colors duration-200',
+                  errors.title 
+                    ? 'border-red-300 focus:ring-red-500 focus:border-red-500' 
+                    : 'border-gray-200 focus:ring-indigo-500 focus:border-indigo-500'
+                ]"
+                @blur="validateTitle"
+              >
+                <option value="">Ünvan seçiniz</option>
+                <option value="öğrenci">Öğrenci</option>
+                <option value="akademisyen">Akademisyen</option>
+                <option value="araştırmacı">Araştırmacı</option>
+                <option value="doktor">Doktor</option>
+                <option value="profesör">Profesör</option>
+                <option value="doçent">Doçent</option>
+                <option value="yardımcı_doçent">Yardımcı Doçent</option>
+                <option value="öğretim_görevlisi">Öğretim Görevlisi</option>
+                <option value="diğer">Diğer</option>
+              </select>
+              <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+            <p v-if="errors.title" class="mt-1 text-sm text-red-600">{{ errors.title }}</p>
+          </div>
+
+          <!-- Ülke -->
+          <div>
+            <label for="country" class="block text-sm font-medium text-gray-700">
+              Ülke <span class="text-red-500">*</span>
+            </label>
+            <div class="mt-1 relative">
+              <select
+                id="country"
+                v-model="form.country"
+                required
+                :class="[
+                  'appearance-none block w-full px-3 py-2.5 border-2 rounded-lg transition-colors duration-200',
+                  errors.country 
+                    ? 'border-red-300 focus:ring-red-500 focus:border-red-500' 
+                    : 'border-gray-200 focus:ring-indigo-500 focus:border-indigo-500'
+                ]"
+                @blur="validateCountry"
+              >
+                <option value="">Ülke seçiniz</option>
+                <option value="Türkiye">Türkiye</option>
+                <option value="ABD">ABD</option>
+                <option value="Almanya">Almanya</option>
+                <option value="Fransa">Fransa</option>
+                <option value="İngiltere">İngiltere</option>
+                <option value="İtalya">İtalya</option>
+                <option value="İspanya">İspanya</option>
+                <option value="Hollanda">Hollanda</option>
+                <option value="Belçika">Belçika</option>
+                <option value="Avusturya">Avusturya</option>
+                <option value="İsviçre">İsviçre</option>
+                <option value="İsveç">İsveç</option>
+                <option value="Norveç">Norveç</option>
+                <option value="Danimarka">Danimarka</option>
+                <option value="Finlandiya">Finlandiya</option>
+                <option value="Polonya">Polonya</option>
+                <option value="Çekya">Çekya</option>
+                <option value="Slovakya">Slovakya</option>
+                <option value="Macaristan">Macaristan</option>
+                <option value="Romanya">Romanya</option>
+                <option value="Bulgaristan">Bulgaristan</option>
+                <option value="Yunanistan">Yunanistan</option>
+                <option value="Portekiz">Portekiz</option>
+                <option value="Rusya">Rusya</option>
+                <option value="Ukrayna">Ukrayna</option>
+                <option value="Belarus">Belarus</option>
+                <option value="Moldova">Moldova</option>
+                <option value="Letonya">Letonya</option>
+                <option value="Litvanya">Litvanya</option>
+                <option value="Estonya">Estonya</option>
+                <option value="Slovenya">Slovenya</option>
+                <option value="Hırvatistan">Hırvatistan</option>
+                <option value="Bosna Hersek">Bosna Hersek</option>
+                <option value="Sırbistan">Sırbistan</option>
+                <option value="Karadağ">Karadağ</option>
+                <option value="Kosova">Kosova</option>
+                <option value="Makedonya">Makedonya</option>
+                <option value="Arnavutluk">Arnavutluk</option>
+                <option value="Japonya">Japonya</option>
+                <option value="Güney Kore">Güney Kore</option>
+                <option value="Çin">Çin</option>
+                <option value="Hindistan">Hindistan</option>
+                <option value="Pakistan">Pakistan</option>
+                <option value="Bangladeş">Bangladeş</option>
+                <option value="Sri Lanka">Sri Lanka</option>
+                <option value="Nepal">Nepal</option>
+                <option value="Bhutan">Bhutan</option>
+                <option value="Maldives">Maldives</option>
+                <option value="Afganistan">Afganistan</option>
+                <option value="İran">İran</option>
+                <option value="Irak">Irak</option>
+                <option value="Suriye">Suriye</option>
+                <option value="Lübnan">Lübnan</option>
+                <option value="İsrail">İsrail</option>
+                <option value="Filistin">Filistin</option>
+                <option value="Ürdün">Ürdün</option>
+                <option value="Suudi Arabistan">Suudi Arabistan</option>
+                <option value="Katar">Katar</option>
+                <option value="Bahreyn">Bahreyn</option>
+                <option value="Kuveyt">Kuveyt</option>
+                <option value="Umman">Umman</option>
+                <option value="Yemen">Yemen</option>
+                <option value="Birleşik Arap Emirlikleri">Birleşik Arap Emirlikleri</option>
+                <option value="Mısır">Mısır</option>
+                <option value="Sudan">Sudan</option>
+                <option value="Libya">Libya</option>
+                <option value="Tunus">Tunus</option>
+                <option value="Cezayir">Cezayir</option>
+                <option value="Fas">Fas</option>
+                <option value="Mauritania">Mauritania</option>
+                <option value="Mali">Mali</option>
+                <option value="Nijer">Nijer</option>
+                <option value="Çad">Çad</option>
+                <option value="Orta Afrika Cumhuriyeti">Orta Afrika Cumhuriyeti</option>
+                <option value="Kamerun">Kamerun</option>
+                <option value="Nijerya">Nijerya</option>
+                <option value="Gana">Gana</option>
+                <option value="Fildişi Sahili">Fildişi Sahili</option>
+                <option value="Burkina Faso">Burkina Faso</option>
+                <option value="Togo">Togo</option>
+                <option value="Benin">Benin</option>
+                <option value="Gine">Gine</option>
+                <option value="Gine Bissau">Gine Bissau</option>
+                <option value="Senegal">Senegal</option>
+                <option value="Gambiya">Gambiya</option>
+                <option value="Sierra Leone">Sierra Leone</option>
+                <option value="Liberya">Liberya</option>
+                <option value="Kongo">Kongo</option>
+                <option value="Kongo Demokratik Cumhuriyeti">Kongo Demokratik Cumhuriyeti</option>
+                <option value="Gabon">Gabon</option>
+                <option value="Ekvator Ginesi">Ekvator Ginesi</option>
+                <option value="São Tomé ve Príncipe">São Tomé ve Príncipe</option>
+                <option value="Angola">Angola</option>
+                <option value="Zambiya">Zambiya</option>
+                <option value="Zimbabve">Zimbabve</option>
+                <option value="Botsvana">Botsvana</option>
+                <option value="Namibya">Namibya</option>
+                <option value="Güney Afrika">Güney Afrika</option>
+                <option value="Lesotho">Lesotho</option>
+                <option value="Esvatini">Esvatini</option>
+                <option value="Mozambik">Mozambik</option>
+                <option value="Malavi">Malavi</option>
+                <option value="Tanzanya">Tanzanya</option>
+                <option value="Kenya">Kenya</option>
+                <option value="Uganda">Uganda</option>
+                <option value="Ruanda">Ruanda</option>
+                <option value="Burundi">Burundi</option>
+                <option value="Etiyopya">Etiyopya</option>
+                <option value="Eritre">Eritre</option>
+                <option value="Cibuti">Cibuti</option>
+                <option value="Somali">Somali</option>
+                <option value="Madagaskar">Madagaskar</option>
+                <option value="Mauritius">Mauritius</option>
+                <option value="Seyşeller">Seyşeller</option>
+                <option value="Komorlar">Komorlar</option>
+                <option value="Kanada">Kanada</option>
+                <option value="Meksika">Meksika</option>
+                <option value="Guatemala">Guatemala</option>
+                <option value="Belize">Belize</option>
+                <option value="El Salvador">El Salvador</option>
+                <option value="Honduras">Honduras</option>
+                <option value="Nikaragua">Nikaragua</option>
+                <option value="Kosta Rika">Kosta Rika</option>
+                <option value="Panama">Panama</option>
+                <option value="Kolombiya">Kolombiya</option>
+                <option value="Venezuela">Venezuela</option>
+                <option value="Guyana">Guyana</option>
+                <option value="Surinam">Surinam</option>
+                <option value="Fransız Guyanası">Fransız Guyanası</option>
+                <option value="Brezilya">Brezilya</option>
+                <option value="Ekvador">Ekvador</option>
+                <option value="Peru">Peru</option>
+                <option value="Bolivya">Bolivya</option>
+                <option value="Paraguay">Paraguay</option>
+                <option value="Uruguay">Uruguay</option>
+                <option value="Arjantin">Arjantin</option>
+                <option value="Şili">Şili</option>
+                <option value="Avustralya">Avustralya</option>
+                <option value="Yeni Zelanda">Yeni Zelanda</option>
+                <option value="Papua Yeni Gine">Papua Yeni Gine</option>
+                <option value="Fiji">Fiji</option>
+                <option value="Vanuatu">Vanuatu</option>
+                <option value="Solomon Adaları">Solomon Adaları</option>
+                <option value="Yeni Kaledonya">Yeni Kaledonya</option>
+                <option value="Samoa">Samoa</option>
+                <option value="Tonga">Tonga</option>
+                <option value="Tuvalu">Tuvalu</option>
+                <option value="Kiribati">Kiribati</option>
+                <option value="Marshall Adaları">Marshall Adaları</option>
+                <option value="Mikronezya">Mikronezya</option>
+                <option value="Palau">Palau</option>
+                <option value="Nauru">Nauru</option>
+                <option value="diğer">Diğer</option>
+              </select>
+              <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+            <p v-if="errors.country" class="mt-1 text-sm text-red-600">{{ errors.country }}</p>
+          </div>
+
           <!-- Şifre -->
           <div>
             <label for="password" class="block text-sm font-medium text-gray-700">
@@ -101,7 +321,7 @@
                   'appearance-none block w-full px-3 py-2.5 border-2 rounded-lg transition-colors duration-200',
                   errors.password 
                     ? 'border-red-300 focus:ring-red-500 focus:border-red-500' 
-                    : 'border-gray-200 focus:ring-indigo-500 focus:border-red-500'
+                    : 'border-gray-200 focus:ring-indigo-500 focus:border-indigo-500'
                 ]"
                 placeholder="••••••••"
                 @blur="validatePassword"
@@ -254,16 +474,20 @@ const apiError = ref('')
 
 // Form state
 const form = ref({
-  fullName: '',
+  fullName: '', // Ad Soyad alanı
   email: '',
+  title: '',
+  country: '',
   password: '',
   passwordConfirm: ''
 })
 
 // Validation errors
 const errors = ref({
-  fullName: '',
+  fullName: '', // Ad Soyad validasyonu
   email: '',
+  title: '',
+  country: '',
   password: '',
   passwordConfirm: ''
 })
@@ -288,6 +512,24 @@ const validateEmail = () => {
     errors.value.email = 'Geçerli bir e-posta adresi giriniz'
   } else {
     errors.value.email = ''
+  }
+}
+
+// Ünvan validasyonu
+const validateTitle = () => {
+  if (!form.value.title) {
+    errors.value.title = 'Ünvan seçimi gereklidir'
+  } else {
+    errors.value.title = ''
+  }
+}
+
+// Ülke validasyonu
+const validateCountry = () => {
+  if (!form.value.country) {
+    errors.value.country = 'Ülke seçimi gereklidir'
+  } else {
+    errors.value.country = ''
   }
 }
 
@@ -321,10 +563,14 @@ const validatePasswordConfirm = () => {
 const isFormValid = computed(() => {
   return form.value.fullName && 
          form.value.email && 
+         form.value.title &&
+         form.value.country &&
          form.value.password &&
          form.value.passwordConfirm &&
          !errors.value.fullName &&
          !errors.value.email && 
+         !errors.value.title &&
+         !errors.value.country &&
          !errors.value.password &&
          !errors.value.passwordConfirm
 })
@@ -340,6 +586,8 @@ const handleRegister = async () => {
     // Form validasyonu
     validateFullName()
     validateEmail()
+    validateTitle()
+    validateCountry()
     validatePassword()
     validatePasswordConfirm()
     
@@ -350,15 +598,17 @@ const handleRegister = async () => {
     isLoading.value = true
     apiError.value = ''
 
-    // API isteği
+    // API isteği - Sadece fullName gönder
     const response = await fetch('/api/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        fullName: form.value.fullName,
+        fullName: form.value.fullName, // Sadece fullName gönder
         email: form.value.email,
+        title: form.value.title,
+        country: form.value.country,
         password: form.value.password
       })
     })

@@ -134,19 +134,6 @@
                     </div>
                     
 
-                 
-                      <MenuItem v-slot="{ active }">
-                        <NuxtLink
-                          to="/profil"
-                          :class="[
-                            active ? 'bg-gray-100' : '',
-                            'inline-flex w-full px-4 py-2 text-sm text-gray-700 text-center'
-                          ]"
-                        >
-                          Profil
-                        </NuxtLink>
-                      </MenuItem>
-                    
                     
                     <form method="POST" @submit.prevent="handleLogout">
                       <MenuItem v-slot="{ active }">
@@ -232,129 +219,147 @@
  
   
    <div>
-    <footer class="bg-gray-900 text-white">
-    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-        <!-- Logo ve Açıklama -->
-        <div class="col-span-1 md:col-span-1">
-          <div class="flex items-center mb-4">
-            <img src="/" alt="Polen DB Logo" class="h-10 w-auto mr-3" />
-            <span class="text-xl font-bold">Polen DB</span>
+        <footer class="bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white relative overflow-hidden">
+      <!-- Dekoratif arka plan elementleri -->
+      <div class="absolute inset-0 bg-gradient-to-br from-blue-600/10 via-purple-600/10 to-indigo-600/10"></div>
+      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 via-indigo-300 to-purple-400"></div>
+      
+      <!-- Floating elements -->
+      <div class="absolute top-20 left-10 w-20 h-20 bg-blue-500/20 rounded-full blur-xl"></div>
+      <div class="absolute top-40 right-20 w-32 h-32 bg-purple-500/20 rounded-full blur-xl"></div>
+      <div class="absolute bottom-20 left-1/4 w-24 h-24 bg-indigo-500/20 rounded-full blur-xl"></div>
+      
+                           <div class="relative z-10 max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:py-12 lg:px-8">
+         <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+          <!-- Logo ve Açıklama -->
+          <div class="col-span-1 md:col-span-1">
+                                                   <div class="flex items-center mb-4">
+               <div class="h-14 w-14 bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center mr-4 shadow-2xl shadow-blue-500/25">
+                 <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                 </svg>
+               </div>
+               <div>
+                 <span class="text-2xl font-bold bg-gradient-to-r from-blue-200 via-indigo-200 to-purple-300 bg-clip-text text-transparent">Polen DB</span>
+                 <p class="text-indigo-200 text-sm font-medium">Veri Merkezi</p>
+               </div>
+             </div>
+                           <p class="text-indigo-100 mb-4 leading-relaxed text-base">
+              Uludağ Üniversitesi Biyoloji Bölümü Polen Araştırma ve Veri Merkezi
+            </p>
+                         <div class="flex space-x-3">
+               <a href="#" class="group h-10 w-10 bg-gradient-to-br from-blue-600/50 to-indigo-600/50 hover:from-blue-500 hover:to-indigo-500 rounded-lg flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-blue-500/25 border border-blue-500/20">
+                 <svg class="h-5 w-5 text-blue-100 group-hover:text-white transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24">
+                   <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" />
+                 </svg>
+               </a>
+               <a href="#" class="group h-10 w-10 bg-gradient-to-br from-indigo-600/50 to-purple-600/50 hover:from-indigo-500 hover:to-purple-500 rounded-lg flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-purple-500/25 border border-purple-500/20">
+                 <svg class="h-5 w-5 text-indigo-100 group-hover:text-white transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24">
+                   <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
+                 </svg>
+               </a>
+               <a href="#" class="group h-10 w-10 bg-gradient-to-br from-purple-600/50 to-pink-600/50 hover:from-purple-500 hover:to-pink-500 rounded-lg flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-purple-500/25 border border-purple-500/20">
+                 <svg class="h-5 w-5 text-purple-100 group-hover:text-white transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24">
+                   <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                 </svg>
+               </a>
+             </div>
           </div>
-          <p class="text-gray-400 mb-4">
-            Uludağ Üniversitesi Biyoloji Bölümü Polen Araştırma ve Veri Merkezi
-          </p>
-          <div class="flex space-x-6">
-            <a href="#" class="text-gray-400 hover:text-white">
-              <span class="sr-only">Facebook</span>
-              <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" />
-              </svg>
-            </a>
-            <a href="#" class="text-gray-400 hover:text-white">
-              <span class="sr-only">Twitter</span>
-              <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
-              </svg>
-            </a>
-            <a href="#" class="text-gray-400 hover:text-white">
-              <span class="sr-only">LinkedIn</span>
-              <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-              </svg>
-            </a>
-          </div>
-        </div>
 
-        <!-- Hızlı Erişim -->
-        <div>
-          <h3 class="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4">
-            Hızlı Erişim
-          </h3>
-          <ul class="space-y-3">
+                          <!-- Hızlı Erişim -->
+         <div class="group">
+           <h3 class="text-lg font-bold text-white mb-4 flex items-center">
+             <div class="h-10 w-10 bg-gradient-to-br from-blue-500/20 to-indigo-500/20 rounded-lg flex items-center justify-center mr-3 group-hover:from-blue-500/30 group-hover:to-indigo-500/30 transition-all duration-300">
+               <svg class="h-5 w-5 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-.758l1.102-1.101a4 4 0 00-5.656-5.656l-4 4a4 4 0 105.656 5.656l1.102-1.101" />
+               </svg>
+             </div>
+             Hızlı Erişim
+           </h3>
+           <ul class="space-y-4">
             <li>
-              <router-link to="/about" class="text-gray-400 hover:text-white">
-                Hakkımızda
-              </router-link>
+              <NuxtLink to="/about" class="text-indigo-200 hover:text-white transition-all duration-300 flex items-center group/link p-3 rounded-lg hover:bg-white/5 hover:shadow-lg">
+                <span class="w-3 h-3 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-full mr-4 group-hover/link:scale-125 transition-all duration-300"></span>
+                <span class="font-medium">Hakkımızda</span>
+              </NuxtLink>
             </li>
+          
             <li>
-              <router-link to="/services" class="text-gray-400 hover:text-white">
-                Hizmetlerimiz
-              </router-link>
+              <NuxtLink to="/search-data/combined" class="text-indigo-200 hover:text-white transition-all duration-300 flex items-center group/link p-3 rounded-lg hover:bg-white/5 hover:shadow-lg">
+                <span class="w-3 h-3 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-full mr-4 group-hover/link:scale-125 transition-all duration-300"></span>
+                <span class="font-medium">Polen Veritabanı</span>
+              </NuxtLink>
             </li>
-            <li>
-              <router-link to="/search-data/combined" class="text-gray-400 hover:text-white">
-                Polen Veritabanı
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/" class="text-gray-400 hover:text-white">
-                Yayınlar
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/faq" class="text-gray-400 hover:text-white flex items-center">
-                <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                Sıkça Sorulan Sorular
-              </router-link>
-            </li>
+            
           </ul>
         </div>
 
-        <!-- Yardım & Destek -->
-        <div>
-          <h3 class="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4">
+                 <!-- Yardım & Destek -->
+         <div class="group">
+           <h3 class="text-lg font-bold text-white mb-4 flex items-center">
+                         <div class="h-10 w-10 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-lg flex items-center justify-center mr-3 group-hover:from-indigo-500/30 group-hover:to-purple-500/30 transition-all duration-300">
+               <svg class="h-5 w-5 text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 0l3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+            </div>
             Yardım & Destek
           </h3>
-          <ul class="space-y-3">
-            <li>
-              <router-link to="/faq" class="text-gray-400 hover:text-white flex items-center">
-                <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                SSS
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/contact" class="text-gray-400 hover:text-white flex items-center">
-                <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-                İletişim Formu
-              </router-link>
-            </li>
-          </ul>
+                     <ul class="space-y-4">
+             <li>
+               <NuxtLink to="/faq" class="text-indigo-200 hover:text-white transition-all duration-300 flex items-center group/link p-3 rounded-lg hover:bg-white/5 hover:shadow-lg">
+                 <span class="w-3 h-3 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full mr-4 group-hover/link:scale-125 transition-all duration-300"></span>
+                 <span class="font-medium">SSS</span>
+               </NuxtLink>
+             </li>
+             <li>
+               <NuxtLink to="/contact" class="text-indigo-200 hover:text-white transition-all duration-300 flex items-center group/link p-3 rounded-lg hover:bg-white/5 hover:shadow-lg">
+                 <span class="w-3 h-3 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full mr-4 group-hover/link:scale-125 transition-all duration-300"></span>
+                 <span class="font-medium">İletişim Formu</span>
+               </NuxtLink>
+             </li>
+           </ul>
         </div>
 
-        <!-- İletişim -->
-        <div>
-          <h3 class="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4">
+                 <!-- İletişim -->
+         <div class="group">
+           <h3 class="text-lg font-bold text-white mb-4 flex items-center">
+                         <div class="h-10 w-10 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-lg flex items-center justify-center mr-3 group-hover:from-purple-500/30 group-hover:to-pink-500/30 transition-all duration-300">
+               <svg class="h-5 w-5 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2z" />
+              </svg>
+            </div>
             İletişim
           </h3>
-          <ul class="space-y-3 text-gray-400">
-            <li class="flex items-center">
-              <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              <span>Uludağ Üniversitesi, Görükle Kampüsü, Bursa</span>
+                     <ul class="space-y-4 text-indigo-200">
+            <li class="group/link">
+              <div class="flex items-start p-3 rounded-lg hover:bg-white/5 hover:shadow-lg transition-all duration-300">
+                <div class="h-10 w-10 bg-gradient-to-br from-blue-500/20 to-indigo-500/20 rounded-lg flex items-center justify-center mr-4 flex-shrink-0 group-hover/link:from-blue-500/30 group-hover/link:to-indigo-500/30 transition-all duration-300">
+                  <svg class="h-5 w-5 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </div>
+                <span class="leading-relaxed font-medium">Uludağ Üniversitesi, Görükle Kampüsü, Bursa</span>
+              </div>
             </li>
-            <li class="flex items-center">
-              <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
-              <a href="mailto:info@polendb.edu.tr" class="hover:text-white">
-                info@polendb.edu.tr
+            <li class="group/link">
+              <a href="mailto:info@polendb.edu.tr" class="flex items-start p-3 rounded-lg hover:bg-white/5 hover:shadow-lg transition-all duration-300">
+                <div class="h-10 w-10 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-lg flex items-center justify-center mr-4 flex-shrink-0 group-hover/link:from-indigo-500/30 group-hover/link:to-purple-500/30 transition-all duration-300">
+                  <svg class="h-5 w-5 text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2z" />
+                  </svg>
+                </div>
+                <span class="font-medium hover:text-white transition-colors duration-300">info@polendb.edu.tr</span>
               </a>
             </li>
-            <li class="flex items-center">
-              <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-              </svg>
-              <a href="tel:+902242941000" class="hover:text-white">
-                +90 224 294 1000
+            <li class="group/link">
+              <a href="tel:+902242941000" class="flex items-start p-3 rounded-lg hover:bg-white/5 hover:shadow-lg transition-all duration-300">
+                <div class="h-10 w-10 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-lg flex items-center justify-center mr-4 flex-shrink-0 group-hover/link:from-purple-500/30 group-hover/link:to-pink-500/30 transition-all duration-300">
+                  <svg class="h-5 w-5 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                  </svg>
+                </div>
+                <span class="font-medium hover:text-white transition-colors duration-300">+90 224 294 1000</span>
               </a>
             </li>
           </ul>
@@ -362,24 +367,27 @@
       </div>
     </div>
 
-    <!-- Alt Footer -->
-    <div class="bg-gray-800">
-      <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-          <p class="text-gray-400 text-sm text-center md:text-left">
-            © {{ new Date().getFullYear() }} Polen DB. Tüm hakları saklıdır.
-          </p>
-          <div class="flex space-x-6">
-            <router-link to="/" class="text-sm text-gray-400 hover:text-white">
-              Gizlilik Politikası
-            </router-link>
-            <router-link to="/" class="text-sm text-gray-400 hover:text-white">
-              Kullanım Şartları
-            </router-link>
+      <!-- Alt Footer -->
+             <div class="relative z-10 bg-gradient-to-r from-slate-950 via-blue-950 to-indigo-950 border-t border-blue-500/20">
+         <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+          <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <div class="flex items-center space-x-2">
+              <div class="h-6 w-6 bg-gradient-to-br from-blue-400 to-indigo-400 rounded-full"></div>
+              <p class="text-blue-200 text-sm font-medium">
+                © {{ new Date().getFullYear() }} Polen DB. Tüm hakları saklıdır.
+              </p>
+            </div>
+            <div class="flex space-x-8">
+              <NuxtLink to="/" class="text-sm text-blue-200 hover:text-white transition-all duration-300 hover:scale-105 font-medium">
+                Gizlilik Politikası
+              </NuxtLink>
+              <NuxtLink to="/" class="text-sm text-blue-200 hover:text-white transition-all duration-300 hover:scale-105 font-medium">
+                Kullanım Şartları
+              </NuxtLink>
+            </div>
           </div>
         </div>
       </div>
-    </div>
   </footer>
   </div>
 
