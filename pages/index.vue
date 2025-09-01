@@ -36,11 +36,18 @@
                     v-if="sliderImages[currentSlide].type === 'video'"
                     :src="sliderImages[currentSlide].src"
                     :alt="sliderImages[currentSlide].alt"
-                    class="w-full h-full object-cover"
+                    class="w-full h-full object-cover rounded-lg"
                     autoplay
                     muted
-                    loop
-                   
+                    playsinline
+                    webkit-playsinline
+                    x5-playsinline
+                    x5-video-player-type="h5"
+                    x5-video-player-fullscreen="false"
+                    x5-video-orientation="portraint"
+                    @play="pauseSlider"
+                    @pause="resumeSlider"
+                    @ended="resumeSlider"
                   ></video>
                 </div>
 
@@ -312,5 +319,32 @@ onUnmounted(() => {
 /* Hover efektleri */
 button:hover {
   transform: scale(1.1);
+}
+
+/* Video stilleri */
+video {
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Mobil video kontrolleri */
+@media (max-width: 768px) {
+  video {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    max-height: 400px;
+  }
+  
+  /* iOS Safari için */
+  video::-webkit-media-controls {
+    display: none !important;
+  }
+  
+  /* Android Chrome için */
+  video::-webkit-media-controls-panel {
+    display: none !important;
+  }
 }
 </style>
